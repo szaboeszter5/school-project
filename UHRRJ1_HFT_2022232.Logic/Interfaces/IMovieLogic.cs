@@ -2,7 +2,7 @@
 using System.Linq;
 using UHRRJ1_HFT_2022232.Models;
 
-namespace UHRRJ1_HFT_2022232.Logic
+namespace UHRRJ1_HFT_2022232.Logic.Interfaces
 {
     public interface IMovieLogic
     {
