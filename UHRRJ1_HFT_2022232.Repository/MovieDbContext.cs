@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UHRRJ1_HFT_2022232.Models;
+
 namespace UHRRJ1_HFT_2022232.Repository
 {
     public class MovieDbContext : DbContext
     {
         public DbSet<Movie> Movies { get; set; }
-        
+
         public DbSet<Role> Roles { get; set; }
 
         public DbSet<Actor> Actors { get; set; }
@@ -14,17 +15,13 @@ namespace UHRRJ1_HFT_2022232.Repository
 
         public MovieDbContext()
         {
-            this.Database.EnsureCreated();
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {
-                string conn = @"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\db.mdf;Integrated Security=True;MultipleActiveResultSets = true";
-
-                optionsBuilder.UseLazyLoadingProxies().UseSqlServer(conn);
-            }
+                optionsBuilder.UseLazyLoadingProxies().UseInMemoryDatabase("db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
