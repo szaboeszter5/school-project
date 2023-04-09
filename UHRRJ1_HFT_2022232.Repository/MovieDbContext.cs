@@ -26,7 +26,6 @@ namespace UHRRJ1_HFT_2022232.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<Movie>(movie => movie
                 .HasOne(movie => movie.Director)
                 .WithMany(director => director.Movies)
@@ -88,7 +87,7 @@ namespace UHRRJ1_HFT_2022232.Repository
 
             modelBuilder.Entity<Director>().HasData(new Director[]
             {
-                   new Director("1#Jon Favreau"),
+                new Director("1#Jon Favreau"),
                 new Director("2#Louis Leterrier"),
                 new Director("3#Kenneth Branagh"),
                 new Director("4#Joe Johnston"),

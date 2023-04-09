@@ -1,6 +1,7 @@
 ﻿using ConsoleTools;
 using System;
 using UHRRJ1_HFT_2022232.Logic;
+using UHRRJ1_HFT_2022232.Models;
 using UHRRJ1_HFT_2022232.Repository;
 
 namespace UHRRJ1_HFT_2022232.Client
@@ -14,10 +15,77 @@ namespace UHRRJ1_HFT_2022232.Client
 
         static void Create(string entity)
         {
-            Console.WriteLine(entity + " create");
+            Console.WriteLine("\n"+entity + " create");
+
+            if (entity == "Actor")
+            {
+                Console.Write("Id: ");
+                string id = Console.ReadLine();
+
+                Console.Write("Name: ");
+                string name = Console.ReadLine();
+
+                Actor a = new Actor(id+"#"+name);
+                actorLogic.Create(a);
+            }
+            if (entity == "Role")
+            {
+                Console.Write("RoleId: ");
+                string RoleId = Console.ReadLine();
+
+                Console.Write("MovieId: ");
+                string MovieId = Console.ReadLine();
+
+                Console.Write("ActorId: ");
+                string ActorId = Console.ReadLine();
+
+                Console.Write("Priority: ");
+                string Priority = Console.ReadLine();
+
+                Console.Write("RoleName: ");
+                string RoleName = Console.ReadLine();
+
+                Role r = new Role($"{RoleId}#{MovieId}#{ActorId}#{Priority}#{RoleName}");
+                roleLogic.Create(r);
+            }
+            if (entity == "Director")
+            {
+                Console.Write("Id: ");
+                string id = Console.ReadLine();
+
+                Console.Write("Name: ");
+                string name = Console.ReadLine();
+
+                Director d = new Director(id + "#" + name);
+                directorLogic.Create(d);
+            }
+            if (entity == "Movie")
+            {
+                Console.Write("Id: ");
+                string MovieId = Console.ReadLine();
+
+                Console.Write("Title: ");
+                string Title = Console.ReadLine();
+
+                Console.Write("Income: ");
+                string Income = Console.ReadLine();
+
+                Console.Write("DirectorId: ");
+                string DirectorId = Console.ReadLine();
+
+                Console.Write("Release: ");
+                string Release = Console.ReadLine();
+
+                Console.Write("Rating: ");
+                string Rating = Console.ReadLine();
+
+                Movie m = new Movie($"{MovieId}#{Title}#{Income}#{DirectorId}#{Release}#{Rating}");
+                movieLogic.Create(m);
+            }
+
+            Console.WriteLine(entity + " created and added.");
             Console.ReadLine();
         }
-
         static void List(string entity)
         {
             if (entity == "Actor")
@@ -58,20 +126,100 @@ namespace UHRRJ1_HFT_2022232.Client
             }
             Console.ReadLine();
         }
-
         static void Update(string entity)
         {
-            Console.WriteLine(entity + " update");
+            Console.WriteLine("\n"+entity + " update");
+
+            if (entity == "Actor")
+            {
+                Console.Write("Id: ");
+                string id = Console.ReadLine();
+
+                Console.Write("new Name: ");
+                string name = Console.ReadLine();
+
+                Actor a = new Actor(id + "#" + name);
+                actorLogic.Update(a);
+            }
+            if (entity == "Role")
+            {
+                Console.Write("RoleId: ");
+                string RoleId = Console.ReadLine();
+
+                Console.Write("new MovieId: ");
+                string MovieId = Console.ReadLine();
+
+                Console.Write("new ActorId: ");
+                string ActorId = Console.ReadLine();
+
+                Console.Write("new Priority: ");
+                string Priority = Console.ReadLine();
+
+                Console.Write("new RoleName: ");
+                string RoleName = Console.ReadLine();
+
+                Role r = new Role($"{RoleId}#{MovieId}#{ActorId}#{Priority}#{RoleName}");
+                roleLogic.Update(r);
+            }
+            if (entity == "Director")
+            {
+                Console.Write("Id: ");
+                string id = Console.ReadLine();
+
+                Console.Write("new name: ");
+                string name = Console.ReadLine();
+
+                Director d = new Director(id + "#" + name);
+                directorLogic.Update(d);
+            }
+            if (entity == "Movie")
+            {
+                Console.Write("Id: ");
+                string MovieId = Console.ReadLine();
+
+                Console.Write("new Title: ");
+                string Title = Console.ReadLine();
+
+                Console.Write("new Income: ");
+                string Income = Console.ReadLine();
+
+                Console.Write("new DirectorId: ");
+                string DirectorId = Console.ReadLine();
+
+                Console.Write("new Release: ");
+                string Release = Console.ReadLine();
+
+                Console.Write("new Rating: ");
+                string Rating = Console.ReadLine();
+
+                Movie m = new Movie($"{MovieId}#{Title}#{Income}#{DirectorId}#{Release}#{Rating}");
+                movieLogic.Update(m);
+            }
+            Console.WriteLine(entity + " updated.");
+
             Console.ReadLine();
         }
-
         static void Delete(string entity)
         {
-            Console.WriteLine(entity + " delete");
+            Console.WriteLine("\n"+entity + " delete");
+
+            Console.Write("Id: ");
+            int id = int.Parse(Console.ReadLine());
+
+            switch (entity)
+            {
+                case "Actor": actorLogic.Delete(id); break;
+
+                case "Director": directorLogic.Delete(id); break;
+
+                case "Movie": movieLogic.Delete(id); break;
+
+                case "Role": roleLogic.Delete(id); break;
+            }
+
+            Console.WriteLine(entity + " deleted.");
             Console.ReadLine();
         }
-
-        // LOGIC MŰVELETEK IMPLEMENTÁLÁSA
 
         static void Main(string[] args)
         {

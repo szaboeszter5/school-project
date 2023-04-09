@@ -5,15 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="db.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="db_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\UHRRJ1_HFT_2022232.Models\UHRRJ1_HFT_2022232.Models.csproj" />
   </ItemGroup>
 
