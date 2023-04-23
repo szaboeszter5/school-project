@@ -52,7 +52,6 @@ namespace UHRRJ1_HFT_2022232.Logic
         }
         #endregion
 
-        #region non-CRUD
         public double? GetAverageRatePerYear(int year)
         {
             return this.repo
@@ -79,7 +78,18 @@ namespace UHRRJ1_HFT_2022232.Logic
             public int Year { get; set; }
             public double? AvgRating { get; set; }
             public int MovieNumber { get; set; }
+
+            public override bool Equals(object obj)
+            {
+                YearInfo other = obj as YearInfo;
+                if (other == null) return false;
+                return Year == other.Year && AvgRating == other.AvgRating && MovieNumber == other.MovieNumber;
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(Year,AvgRating,MovieNumber);
+            }
         }
-        #endregion
     }
 }
