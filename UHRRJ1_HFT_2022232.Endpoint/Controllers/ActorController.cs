@@ -36,7 +36,7 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers
         }
 
         [HttpPut]
-        public void Put([FromBody] Actor value)
+        public void Update([FromBody] Actor value)
         {
             logic.Update(value);
         }
