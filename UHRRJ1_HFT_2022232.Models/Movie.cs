@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace UHRRJ1_HFT_2022232.Models
@@ -29,6 +30,7 @@ namespace UHRRJ1_HFT_2022232.Models
 
         public virtual Director Director { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Actor> Actors { get; set; }
 
         public virtual ICollection<Role> Roles { get; set; }
@@ -50,6 +52,21 @@ namespace UHRRJ1_HFT_2022232.Models
             Rating = double.Parse(split[5]);
         }
 
+        public override bool Equals(object obj)
+        {
+            Movie movie = obj as Movie;
+            return MovieId == movie.MovieId
+                && Title == movie.Title
+                && Income == movie.Income
+                && DirectorId == movie.DirectorId
+                && Release.Equals(movie.Release)
+                && Rating == movie.Rating;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(MovieId,Title,Income,DirectorId,Release,Rating);
+        }
     }
 
 }
