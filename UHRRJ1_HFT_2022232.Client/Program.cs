@@ -1,17 +1,13 @@
 ﻿using ConsoleTools;
 using System;
-using UHRRJ1_HFT_2022232.Logic;
+using System.Collections.Generic;
 using UHRRJ1_HFT_2022232.Models;
-using UHRRJ1_HFT_2022232.Repository;
 
 namespace UHRRJ1_HFT_2022232.Client
 {
     internal class Program
     {
-        static ActorLogic actorLogic;
-        static RoleLogic roleLogic;
-        static DirectorLogic directorLogic;
-        static MovieLogic movieLogic;
+        static RestService rest;
 
         static void Create(string entity)
         {
@@ -26,7 +22,7 @@ namespace UHRRJ1_HFT_2022232.Client
                 string name = Console.ReadLine();
 
                 Actor a = new Actor(id+"#"+name);
-                actorLogic.Create(a);
+                //actorLogic.Create(a);
             }
             if (entity == "Role")
             {
@@ -46,7 +42,7 @@ namespace UHRRJ1_HFT_2022232.Client
                 string RoleName = Console.ReadLine();
 
                 Role r = new Role($"{RoleId}#{MovieId}#{ActorId}#{Priority}#{RoleName}");
-                roleLogic.Create(r);
+                //roleLogic.Create(r);
             }
             if (entity == "Director")
             {
@@ -57,7 +53,7 @@ namespace UHRRJ1_HFT_2022232.Client
                 string name = Console.ReadLine();
 
                 Director d = new Director(id + "#" + name);
-                directorLogic.Create(d);
+                //directorLogic.Create(d);
             }
             if (entity == "Movie")
             {
@@ -80,7 +76,7 @@ namespace UHRRJ1_HFT_2022232.Client
                 string Rating = Console.ReadLine();
 
                 Movie m = new Movie($"{MovieId}#{Title}#{Income}#{DirectorId}#{Release}#{Rating}");
-                movieLogic.Create(m);
+                //movieLogic.Create(m);
             }
 
             Console.WriteLine(entity + " created and added.");
@@ -90,39 +86,38 @@ namespace UHRRJ1_HFT_2022232.Client
         {
             if (entity == "Actor")
             {
-                var items = actorLogic.ReadAll();
-                Console.WriteLine("Id" + "\t" + "Name");
-                foreach (var item in items)
+                List<Actor> actors = rest.Get<Actor>("actor");
+                foreach (var item in actors)
                 {
-                    Console.WriteLine(item.ActorId + "\t" + item.ActorName);
+                    Console.WriteLine(item.ActorName);
                 }
             }
             if (entity == "Role")
             {
-                var items = roleLogic.ReadAll();
-                Console.WriteLine("Id" + "\t" + "Name");
-                foreach (var item in items)
-                {
-                    Console.WriteLine(item.RoleId + "\t" + item.RoleName);
-                }
+                //var items = roleLogic.ReadAll();
+                //Console.WriteLine("Id" + "\t" + "Name");
+                //foreach (var item in items)
+                //{
+                //    Console.WriteLine(item.RoleId + "\t" + item.RoleName);
+                //}
             }
             if (entity == "Director")
             {
-                var items = directorLogic.ReadAll();
-                Console.WriteLine("Id" + "\t" + "Name");
-                foreach (var item in items)
-                {
-                    Console.WriteLine(item.DirectorId + "\t" + item.DirectorName);
-                }
+                //var items = directorLogic.ReadAll();
+                //Console.WriteLine("Id" + "\t" + "Name");
+                //foreach (var item in items)
+                //{
+                //    Console.WriteLine(item.DirectorId + "\t" + item.DirectorName);
+                //}
             }
             if (entity == "Movie")
             {
-                var items = movieLogic.ReadAll();
-                Console.WriteLine("Id" + "\t" + "Name");
-                foreach (var item in items)
-                {
-                    Console.WriteLine(item.MovieId + "\t" + item.Title);
-                }
+                //var items = movieLogic.ReadAll();
+                //Console.WriteLine("Id" + "\t" + "Name");
+                //foreach (var item in items)
+                //{
+                //    Console.WriteLine(item.MovieId + "\t" + item.Title);
+                //}
             }
             Console.ReadLine();
         }
@@ -139,7 +134,7 @@ namespace UHRRJ1_HFT_2022232.Client
                 string name = Console.ReadLine();
 
                 Actor a = new Actor(id + "#" + name);
-                actorLogic.Update(a);
+                //actorLogic.Update(a);
             }
             if (entity == "Role")
             {
@@ -159,7 +154,7 @@ namespace UHRRJ1_HFT_2022232.Client
                 string RoleName = Console.ReadLine();
 
                 Role r = new Role($"{RoleId}#{MovieId}#{ActorId}#{Priority}#{RoleName}");
-                roleLogic.Update(r);
+                //roleLogic.Update(r);
             }
             if (entity == "Director")
             {
@@ -170,7 +165,7 @@ namespace UHRRJ1_HFT_2022232.Client
                 string name = Console.ReadLine();
 
                 Director d = new Director(id + "#" + name);
-                directorLogic.Update(d);
+                //directorLogic.Update(d);
             }
             if (entity == "Movie")
             {
@@ -193,7 +188,7 @@ namespace UHRRJ1_HFT_2022232.Client
                 string Rating = Console.ReadLine();
 
                 Movie m = new Movie($"{MovieId}#{Title}#{Income}#{DirectorId}#{Release}#{Rating}");
-                movieLogic.Update(m);
+                //movieLogic.Update(m);
             }
             Console.WriteLine(entity + " updated.");
 
@@ -206,16 +201,16 @@ namespace UHRRJ1_HFT_2022232.Client
             Console.Write("Id: ");
             int id = int.Parse(Console.ReadLine());
 
-            switch (entity)
-            {
-                case "Actor": actorLogic.Delete(id); break;
+            //switch (entity)
+            //{
+            //    case "Actor": actorLogic.Delete(id); break;
 
-                case "Director": directorLogic.Delete(id); break;
+            //    case "Director": directorLogic.Delete(id); break;
 
-                case "Movie": movieLogic.Delete(id); break;
+            //    case "Movie": movieLogic.Delete(id); break;
 
-                case "Role": roleLogic.Delete(id); break;
-            }
+            //    case "Role": roleLogic.Delete(id); break;
+            //}
 
             Console.WriteLine(entity + " deleted.");
             Console.ReadLine();
@@ -223,17 +218,7 @@ namespace UHRRJ1_HFT_2022232.Client
 
         static void Main(string[] args)
         {
-            var ctx = new MovieDbContext();
-
-            var movieRepo = new MovieRepository(ctx);
-            var roleRepo = new RoleRepository(ctx);
-            var actorRepo = new ActorRepository(ctx);
-            var directorRepo = new DirectorRepository(ctx);
-
-            movieLogic = new MovieLogic(movieRepo);
-            roleLogic = new RoleLogic(roleRepo);
-            actorLogic = new ActorLogic(actorRepo);
-            directorLogic = new DirectorLogic(directorRepo);
+            rest = new RestService("http://localhost:23125/", "movie");
 
             var actorSubMenu = new ConsoleMenu(args, level: 1)
                 .Add("List", () => List("Actor"))
