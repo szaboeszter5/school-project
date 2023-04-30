@@ -1,6 +1,7 @@
 ﻿using ConsoleTools;
 using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UHRRJ1_HFT_2022232.Models;
 
 namespace UHRRJ1_HFT_2022232.Client
@@ -15,20 +16,12 @@ namespace UHRRJ1_HFT_2022232.Client
 
             if (entity == "Actor")
             {
-                Console.Write("Id: ");
-                string id = Console.ReadLine();
-
                 Console.Write("Name: ");
                 string name = Console.ReadLine();
-
-                Actor a = new Actor(id+"#"+name);
-                //actorLogic.Create(a);
+                rest.Post(new Actor() { ActorName = name}, "actor");
             }
             if (entity == "Role")
             {
-                Console.Write("RoleId: ");
-                string RoleId = Console.ReadLine();
-
                 Console.Write("MovieId: ");
                 string MovieId = Console.ReadLine();
 
@@ -41,25 +34,22 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("RoleName: ");
                 string RoleName = Console.ReadLine();
 
-                Role r = new Role($"{RoleId}#{MovieId}#{ActorId}#{Priority}#{RoleName}");
-                //roleLogic.Create(r);
+                rest.Post(new Role() 
+                { 
+                    RoleName = RoleName,
+                    MovieId = int.Parse(MovieId),
+                    ActorId = int.Parse(ActorId),
+                    Priority = int.Parse(Priority)
+                }, "role");
             }
             if (entity == "Director")
             {
-                Console.Write("Id: ");
-                string id = Console.ReadLine();
-
                 Console.Write("Name: ");
                 string name = Console.ReadLine();
-
-                Director d = new Director(id + "#" + name);
-                //directorLogic.Create(d);
+                rest.Post(new Director() { DirectorName = name }, "director");
             }
             if (entity == "Movie")
             {
-                Console.Write("Id: ");
-                string MovieId = Console.ReadLine();
-
                 Console.Write("Title: ");
                 string Title = Console.ReadLine();
 
@@ -75,8 +65,15 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("Rating: ");
                 string Rating = Console.ReadLine();
 
-                Movie m = new Movie($"{MovieId}#{Title}#{Income}#{DirectorId}#{Release}#{Rating}");
-                //movieLogic.Create(m);
+                rest.Post(new Movie()
+                { 
+                    Title = Title,
+                    Income = int.Parse(Income),
+                    DirectorId = int.Parse(DirectorId),
+                    Release = DateTime.Parse(Release),
+                    Rating = int.Parse(Rating)
+
+                }, "movie");
             }
 
             Console.WriteLine(entity + " created and added.");
@@ -86,38 +83,41 @@ namespace UHRRJ1_HFT_2022232.Client
         {
             if (entity == "Actor")
             {
+                Console.WriteLine("Id" + "\t" + "Name");
                 List<Actor> actors = rest.Get<Actor>("actor");
                 foreach (var item in actors)
                 {
-                    Console.WriteLine(item.ActorName);
+                    Console.WriteLine(item.ActorId + "\t" + item.ActorName);
                 }
             }
             if (entity == "Role")
             {
-                //var items = roleLogic.ReadAll();
-                //Console.WriteLine("Id" + "\t" + "Name");
-                //foreach (var item in items)
-                //{
-                //    Console.WriteLine(item.RoleId + "\t" + item.RoleName);
-                //}
+                Console.WriteLine("id" + "\t" + "Name");
+                List<Role> roles = rest.Get<Role>("role");
+                foreach (var item in roles)
+                {
+                    Console.WriteLine(item.RoleId + "\t" + item.RoleName);
+                }
             }
             if (entity == "Director")
             {
-                //var items = directorLogic.ReadAll();
-                //Console.WriteLine("Id" + "\t" + "Name");
-                //foreach (var item in items)
-                //{
-                //    Console.WriteLine(item.DirectorId + "\t" + item.DirectorName);
-                //}
+                Console.WriteLine("Id" + "\t" + "Name");
+                List<Director> directors = rest.Get<Director>("director");
+                foreach (var item in directors)
+                {
+                    Console.WriteLine(item.DirectorId + "\t" + item.DirectorName);
+                }
+
+
             }
             if (entity == "Movie")
             {
-                //var items = movieLogic.ReadAll();
-                //Console.WriteLine("Id" + "\t" + "Name");
-                //foreach (var item in items)
-                //{
-                //    Console.WriteLine(item.MovieId + "\t" + item.Title);
-                //}
+                Console.WriteLine("Id" + "\t" + "Title");
+                List<Movie> movies = rest.Get<Movie>("movie");
+                foreach (var item in movies)
+                {
+                    Console.WriteLine(item.MovieId + "\t" + item.Title);
+                }
             }
             Console.ReadLine();
         }
@@ -128,13 +128,14 @@ namespace UHRRJ1_HFT_2022232.Client
             if (entity == "Actor")
             {
                 Console.Write("Id: ");
-                string id = Console.ReadLine();
+                int id = int.Parse(Console.ReadLine());
 
                 Console.Write("new Name: ");
                 string name = Console.ReadLine();
 
-                Actor a = new Actor(id + "#" + name);
-                //actorLogic.Update(a);
+                Actor a = rest.Get<Actor>(id, "actor");
+                a.ActorName = name;
+                rest.Put(a,"actor");
             }
             if (entity == "Role")
             {
@@ -153,8 +154,13 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("new RoleName: ");
                 string RoleName = Console.ReadLine();
 
-                Role r = new Role($"{RoleId}#{MovieId}#{ActorId}#{Priority}#{RoleName}");
-                //roleLogic.Update(r);
+                Role r = rest.Get<Role>(int.Parse(RoleId),"role");
+                r.RoleName = RoleName;
+                r.Priority = int.Parse(Priority);
+                r.ActorId = int.Parse(ActorId);
+                r.MovieId = int.Parse(MovieId);
+                r.RoleId = int.Parse(RoleId);
+                rest.Put(r,"role");
             }
             if (entity == "Director")
             {
@@ -164,8 +170,9 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("new name: ");
                 string name = Console.ReadLine();
 
-                Director d = new Director(id + "#" + name);
-                //directorLogic.Update(d);
+                Director d = rest.Get<Director>(int.Parse(id),"director");
+                d.DirectorName = name;
+                rest.Put(d,"director");
             }
             if (entity == "Movie")
             {
@@ -187,8 +194,13 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("new Rating: ");
                 string Rating = Console.ReadLine();
 
-                Movie m = new Movie($"{MovieId}#{Title}#{Income}#{DirectorId}#{Release}#{Rating}");
-                //movieLogic.Update(m);
+                Movie m = rest.Get<Movie>(int.Parse(MovieId),"movie");
+                m.Title = Title;
+                m.Income = int.Parse(Income);
+                m.DirectorId = int.Parse(DirectorId);
+                m.Release = DateTime.Parse(Release);
+                m.Rating = int.Parse(Rating);
+                rest.Put(m,"movie");
             }
             Console.WriteLine(entity + " updated.");
 
@@ -201,16 +213,16 @@ namespace UHRRJ1_HFT_2022232.Client
             Console.Write("Id: ");
             int id = int.Parse(Console.ReadLine());
 
-            //switch (entity)
-            //{
-            //    case "Actor": actorLogic.Delete(id); break;
+            switch (entity)
+            {
+                case "Actor": rest.Delete(id,"actor"); break;
 
-            //    case "Director": directorLogic.Delete(id); break;
+                case "Director": rest.Delete(id, "director"); break;
 
-            //    case "Movie": movieLogic.Delete(id); break;
+                case "Movie": rest.Delete(id, "movie"); break;
 
-            //    case "Role": roleLogic.Delete(id); break;
-            //}
+                case "Role": rest.Delete(id, "role"); break;
+            }
 
             Console.WriteLine(entity + " deleted.");
             Console.ReadLine();
