@@ -1,6 +1,7 @@
 ﻿using ConsoleTools;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using UHRRJ1_HFT_2022232.Models;
 
@@ -228,9 +229,42 @@ namespace UHRRJ1_HFT_2022232.Client
             Console.ReadLine();
         }
 
+        static void GetAverageRatePerYear()
+        {
+            Console.Write("Year: ");
+            double year = double.Parse(Console.ReadLine());
+            IQueryable<Movie> movies = rest.Get<Movie>("movie").AsQueryable();
+            double result = movies.Where(t => t.Release.Year == year).Average(t => t.Rating);
+            Console.WriteLine("Rating: "+result);
+            Console.ReadLine();
+        }
+        static void YearStatistics()
+        {
+            IQueryable<Movie> movies = rest.Get<Movie>("movie").AsQueryable();
+            var q =from x in movies
+                   group x by x.Release.Year into g
+                   select new
+                   {
+                       Year = g.Key,
+                       AvgRating = g.Average(t => t.Rating),
+                       MovieNumber = g.Count()
+                   };
+            Console.WriteLine("Year:\tRating\tNumber of movies");
+            foreach (var item in q)
+            {
+                Console.WriteLine(item.Year + "\t" + Math.Round(item.AvgRating,2) + "\t"+item.MovieNumber);
+            }
+            Console.ReadLine();
+        }
+
         static void Main(string[] args)
         {
             rest = new RestService("http://localhost:23125/", "movie");
+
+            var Stat = new ConsoleMenu(args, level: 1)
+                .Add("Average Rating Per Year",() => GetAverageRatePerYear())
+                .Add("Year Statistics", () => YearStatistics())
+                .Add("Exit", ConsoleMenu.Close);
 
             var actorSubMenu = new ConsoleMenu(args, level: 1)
                 .Add("List", () => List("Actor"))
@@ -258,8 +292,8 @@ namespace UHRRJ1_HFT_2022232.Client
                 .Add("Create", () => Create("Movie"))
                 .Add("Delete", () => Delete("Movie"))
                 .Add("Update", () => Update("Movie"))
+                .Add("Statistics", () => Stat.Show())
                 .Add("Exit", ConsoleMenu.Close);
-
 
             var menu = new ConsoleMenu(args, level: 0)
                 .Add("Movies", () => movieSubMenu.Show())
