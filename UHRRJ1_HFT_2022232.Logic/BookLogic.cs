@@ -7,17 +7,17 @@ using UHRRJ1_HFT_2022232.Repository;
 
 namespace UHRRJ1_HFT_2022232.Logic
 {
-    public class MovieLogic : IMovieLogic
+    public class BookLogic : IBookLogic
     {
-        IRepository<Movie> repo;
+        IRepository<Book> repo;
 
-        public MovieLogic(IRepository<Movie> repo)
+        public BookLogic(IRepository<Book> repo)
         {
             this.repo = repo;
         }
 
         #region CRUD
-        public void Create(Movie item)
+        public void Create(Book item)
         {
             if (item.Title.Length < 3)
             {
@@ -31,22 +31,22 @@ namespace UHRRJ1_HFT_2022232.Logic
             this.repo.Delete(id);
         }
 
-        public Movie Read(int id)
+        public Book Read(int id)
         {
-            var movie = this.repo.Read(id);
-            if (movie == null)
+            var Book = this.repo.Read(id);
+            if (Book == null)
             {
-                throw new ArgumentException("This movie does not exist.");
+                throw new ArgumentException("This Book does not exist.");
             }
-            return movie;
+            return Book;
         }
 
-        public IQueryable<Movie> ReadAll()
+        public IQueryable<Book> ReadAll()
         {
             return this.repo.ReadAll();
         }
 
-        public void Update(Movie item)
+        public void Update(Book item)
         {
             this.repo.Update(item);
         }
@@ -60,7 +60,6 @@ namespace UHRRJ1_HFT_2022232.Logic
                .Average(t => t.Rating);
         }
 
-
         public IEnumerable<YearInfo> YearStatistics()
         {
             return from x in this.repo.ReadAll()
@@ -69,7 +68,7 @@ namespace UHRRJ1_HFT_2022232.Logic
                    {
                        Year = g.Key,
                        AvgRating = g.Average(t => t.Rating),
-                       MovieNumber = g.Count()
+                       BookNumber = g.Count()
                    };
         }
 
@@ -77,18 +76,18 @@ namespace UHRRJ1_HFT_2022232.Logic
         {
             public int Year { get; set; }
             public double? AvgRating { get; set; }
-            public int MovieNumber { get; set; }
+            public int BookNumber { get; set; }
 
             public override bool Equals(object obj)
             {
                 YearInfo other = obj as YearInfo;
                 if (other == null) return false;
-                return Year == other.Year && AvgRating == other.AvgRating && MovieNumber == other.MovieNumber;
+                return Year == other.Year && AvgRating == other.AvgRating && BookNumber == other.BookNumber;
             }
 
             public override int GetHashCode()
             {
-                return HashCode.Combine(Year,AvgRating,MovieNumber);
+                return HashCode.Combine(Year,AvgRating,BookNumber);
             }
         }
     }

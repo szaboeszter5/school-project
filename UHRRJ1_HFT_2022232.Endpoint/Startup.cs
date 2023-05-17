@@ -25,17 +25,17 @@ namespace UHRRJ1_HFT_2022232.Endpoint
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<MovieDbContext>();
+            services.AddTransient<LibraryDbContext>();
 
-            services.AddTransient<IRepository<Movie>, MovieRepository>();
-            services.AddTransient<IRepository<Role>, RoleRepository>();
-            services.AddTransient<IRepository<Actor>, ActorRepository>();
-            services.AddTransient<IRepository<Director>, DirectorRepository>();
+            services.AddTransient<IRepository<Book>, BookRepository>();
+            services.AddTransient<IRepository<Library>, LibraryRepository>();
+            services.AddTransient<IRepository<Reader>, ReaderRepository>();
+            services.AddTransient<IRepository<Author>, AuthorRepository>();
 
-            services.AddTransient<IMovieLogic, MovieLogic>();
-            services.AddTransient<IRoleLogic, RoleLogic>();
-            services.AddTransient<IActorLogic, ActorLogic>();
-            services.AddTransient<IDirectorLogic, DirectorLogic>();
+            services.AddTransient<IBookLogic, BookLogic>();
+            services.AddTransient<ILibraryLogic, LibraryLogic>();
+            services.AddTransient<IReaderLogic, ReaderLogic>();
+            services.AddTransient<IAuthorLogic, AuthorLogic>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

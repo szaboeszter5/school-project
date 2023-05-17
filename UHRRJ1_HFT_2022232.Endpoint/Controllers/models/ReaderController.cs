@@ -5,38 +5,38 @@ using UHRRJ1_HFT_2022232.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace UHRRJ1_HFT_2022232.Endpoint.Controllers
+namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
 {
     [Route("[controller]")]
     [ApiController]
-    public class ActorController : ControllerBase
+    public class ReaderController : ControllerBase
     {
-        IActorLogic logic;
-        public ActorController(IActorLogic logic)
+        IReaderLogic logic;
+        public ReaderController(IReaderLogic logic)
         {
             this.logic = logic;
         }
 
         [HttpGet]
-        public IEnumerable<Actor> ReadAll()
+        public IEnumerable<Reader> ReadAll()
         {
             return logic.ReadAll();
         }
 
         [HttpGet("{id}")]
-        public Actor Read(int id)
+        public Reader Read(int id)
         {
             return logic.Read(id);
         }
 
         [HttpPost]
-        public void Create([FromBody] Actor value)
+        public void Create([FromBody] Reader value)
         {
             logic.Create(value);
         }
 
         [HttpPut]
-        public void Update([FromBody] Actor value)
+        public void Update([FromBody] Reader value)
         {
             logic.Update(value);
         }

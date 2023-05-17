@@ -5,16 +5,16 @@ using UHRRJ1_HFT_2022232.Repository;
 
 namespace UHRRJ1_HFT_2022232.Logic
 {
-    public class RoleLogic : IRoleLogic
+    public class AuthorLogic : IAuthorLogic
     {
-        IRepository<Role> repo;
+        IRepository<Author> repo;
 
-        public RoleLogic(IRepository<Role> repo)
+        public AuthorLogic(IRepository<Author> repo)
         {
             this.repo = repo;
         }
 
-        public void Create(Role item)
+        public void Create(Author item)
         {
             this.repo.Create(item);
         }
@@ -24,17 +24,17 @@ namespace UHRRJ1_HFT_2022232.Logic
             this.repo.Delete(id);
         }
 
-        public Role Read(int id)
+        public Author Read(int id)
         {
             return this.repo.Read(id);
         }
 
-        public IQueryable<Role> ReadAll()
+        public IQueryable<Author> ReadAll()
         {
             return this.repo.ReadAll();
         }
 
-        public void Update(Role item)
+        public void Update(Author item)
         {
             this.repo.Update(item);
         }

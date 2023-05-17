@@ -5,28 +5,28 @@ using System.Linq;
 using UHRRJ1_HFT_2022232.Logic;
 using UHRRJ1_HFT_2022232.Models;
 using UHRRJ1_HFT_2022232.Repository;
-using static UHRRJ1_HFT_2022232.Logic.MovieLogic;
+using static UHRRJ1_HFT_2022232.Logic.BookLogic;
 
 namespace UHRRJ1_HFT_2022232.Test
 {
     [TestFixture]
-    public class MovieLogicTester
+    public class BookLogicTester
     {
-        MovieLogic logic;
-        Mock<IRepository<Movie>> mockMovieRepo;
+        BookLogic logic;
+        Mock<IRepository<Book>> mockBookRepo;
 
         [SetUp]
         public void Init()
         {
-            mockMovieRepo = new Mock<IRepository<Movie>>();
-            mockMovieRepo.Setup(m => m.ReadAll()).Returns(new List<Movie>()
+            mockBookRepo = new Mock<IRepository<Book>>();
+            mockBookRepo.Setup(m => m.ReadAll()).Returns(new List<Book>()
             {
-                new Movie("1#MovieA#100#1#2008*05*02#5"),
-                new Movie("2#MovieB#200#1#2009*05*02#6"),
-                new Movie("3#MovieC#300#1#2009*05*02#7"),
-                new Movie("4#MovieD#400#1#2010*05*02#8"),
+                new Book("1#BookA#100#1#2008*05*02#5"),
+                new Book("2#BookB#200#1#2009*05*02#6"),
+                new Book("3#BookC#300#1#2009*05*02#7"),
+                new Book("4#BookD#400#1#2010*05*02#8"),
             }.AsQueryable());
-            logic = new MovieLogic(mockMovieRepo.Object);
+            logic = new BookLogic(mockBookRepo.Object);
         }
 
         [Test]
@@ -46,19 +46,19 @@ namespace UHRRJ1_HFT_2022232.Test
                 {
                     Year = 2008,
                     AvgRating = 5,
-                    MovieNumber = 1
+                    BookNumber = 1
                 },
                 new YearInfo()
                 {
                     Year = 2009,
                     AvgRating = 6.5,
-                    MovieNumber = 2
+                    BookNumber = 2
                 },
                 new YearInfo()
                 {
                     Year = 2010,
                     AvgRating = 8,
-                    MovieNumber = 1
+                    BookNumber = 1
                 }
             };
 
@@ -68,25 +68,25 @@ namespace UHRRJ1_HFT_2022232.Test
 
         //CREATE EXCEPTION HANDLING
         [Test]
-        public void CreateMovieTestWithCorrectTitle()
+        public void CreateBookTestWithCorrectTitle()
         {
-            var movie = new Movie() { Title = "Vukk" };
+            var Book = new Book() { Title = "A per" };
 
             //ACT
-            logic.Create(movie);
+            logic.Create(Book);
 
             //ASSERT
-            mockMovieRepo.Verify(r => r.Create(movie), Times.Once);
+            mockBookRepo.Verify(r => r.Create(Book), Times.Once);
         }
 
         [Test]
-        public void CreateMovieTestWithInCorrectTitle()
+        public void CreateBookTestWithInCorrectTitle()
         {
-            var movie = new Movie() { Title = "24" };
+            var Book = new Book() { Title = "Az" };
             try
             {
                 //ACT
-                logic.Create(movie);
+                logic.Create(Book);
             }
             catch
             {
@@ -94,7 +94,7 @@ namespace UHRRJ1_HFT_2022232.Test
             }
 
             //ASSERT
-            mockMovieRepo.Verify(r => r.Create(movie), Times.Never);
+            mockBookRepo.Verify(r => r.Create(Book), Times.Never);
         }
     }
 }

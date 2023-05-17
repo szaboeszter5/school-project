@@ -4,12 +4,12 @@ using UHRRJ1_HFT_2022232.Models;
 
 namespace UHRRJ1_HFT_2022232.Logic.Interfaces
 {
-    public interface IRoleLogic
+    public interface ILibraryLogic
     {
-        void Create(Role item);
+        void Create(Library item);
         void Delete(int id);
-        Role Read(int id);
-        IQueryable<Role> ReadAll();
-        void Update(Role item);
+        Library Read(int id);
+        IQueryable<Library> ReadAll();
+        void Update(Library item);
     }
 }

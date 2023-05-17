@@ -11,9 +11,9 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers
     [ApiController]
     public class StatController : ControllerBase
     {
-        IMovieLogic logic;
+        IBookLogic logic;
 
-        public StatController(IMovieLogic logic)
+        public StatController(IBookLogic logic)
         {
             this.logic = logic;
         }
@@ -25,7 +25,7 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<MovieLogic.YearInfo> YearStatistics(int year)
+        public IEnumerable<BookLogic.YearInfo> YearStatistics(int year)
         {
             return this.logic.YearStatistics();
         }

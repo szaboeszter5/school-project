@@ -4,8 +4,8 @@ namespace UHRRJ1_HFT_2022232.Repository
 {
     public abstract class Repository<T> : IRepository<T> where T : class
     {
-        protected MovieDbContext ctx;
-        public Repository(MovieDbContext ctx)
+        protected LibraryDbContext ctx;
+        public Repository(LibraryDbContext ctx)
         {
             this.ctx = ctx;
         }

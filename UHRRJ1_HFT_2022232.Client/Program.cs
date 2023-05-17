@@ -15,50 +15,46 @@ namespace UHRRJ1_HFT_2022232.Client
         {
             Console.WriteLine("\n"+entity + " create");
 
-            if (entity == "Actor")
+            if (entity == "Reader")
             {
                 Console.Write("Name: ");
                 string name = Console.ReadLine();
-                rest.Post(new Actor() { ActorName = name}, "actor");
+                rest.Post(new Reader() { ReaderName = name}, "Reader");
             }
-            if (entity == "Role")
+            if (entity == "Library")
             {
-                Console.Write("MovieId: ");
-                string MovieId = Console.ReadLine();
+                Console.Write("BookId: ");
+                string BookId = Console.ReadLine();
 
-                Console.Write("ActorId: ");
-                string ActorId = Console.ReadLine();
+                Console.Write("ReaderId: ");
+                string ReaderId = Console.ReadLine();
 
-                Console.Write("Priority: ");
-                string Priority = Console.ReadLine();
+                Console.Write("LibraryName: ");
+                string LibraryName = Console.ReadLine();
 
-                Console.Write("RoleName: ");
-                string RoleName = Console.ReadLine();
-
-                rest.Post(new Role() 
+                rest.Post(new Library() 
                 { 
-                    RoleName = RoleName,
-                    MovieId = int.Parse(MovieId),
-                    ActorId = int.Parse(ActorId),
-                    Priority = int.Parse(Priority)
-                }, "role");
+                    LibraryName = LibraryName,
+                    BookId = int.Parse(BookId),
+                    ReaderId = int.Parse(ReaderId),
+                }, "Library");
             }
-            if (entity == "Director")
+            if (entity == "Author")
             {
                 Console.Write("Name: ");
                 string name = Console.ReadLine();
-                rest.Post(new Director() { DirectorName = name }, "director");
+                rest.Post(new Author() { AuthorName = name }, "Author");
             }
-            if (entity == "Movie")
+            if (entity == "Book")
             {
                 Console.Write("Title: ");
                 string Title = Console.ReadLine();
 
-                Console.Write("Income: ");
+                Console.Write("Price: ");
                 string Income = Console.ReadLine();
 
-                Console.Write("DirectorId: ");
-                string DirectorId = Console.ReadLine();
+                Console.Write("AuthorId: ");
+                string AuthorId = Console.ReadLine();
 
                 Console.Write("Release: ");
                 string Release = Console.ReadLine();
@@ -66,15 +62,15 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("Rating: ");
                 string Rating = Console.ReadLine();
 
-                rest.Post(new Movie()
+                rest.Post(new Book()
                 { 
                     Title = Title,
-                    Income = int.Parse(Income),
-                    DirectorId = int.Parse(DirectorId),
+                    Price = int.Parse(Income),
+                    AuthorId = int.Parse(AuthorId),
                     Release = DateTime.Parse(Release),
                     Rating = int.Parse(Rating)
 
-                }, "movie");
+                }, "Book");
             }
 
             Console.WriteLine(entity + " created and added.");
@@ -82,42 +78,42 @@ namespace UHRRJ1_HFT_2022232.Client
         }
         static void List(string entity)
         {
-            if (entity == "Actor")
+            if (entity == "Reader")
             {
                 Console.WriteLine("Id" + "\t" + "Name");
-                List<Actor> actors = rest.Get<Actor>("actor");
-                foreach (var item in actors)
+                List<Reader> Readers = rest.Get<Reader>("Reader");
+                foreach (var item in Readers)
                 {
-                    Console.WriteLine(item.ActorId + "\t" + item.ActorName);
+                    Console.WriteLine(item.ReaderId + "\t" + item.ReaderName);
                 }
             }
-            if (entity == "Role")
+            if (entity == "Library")
             {
                 Console.WriteLine("id" + "\t" + "Name");
-                List<Role> roles = rest.Get<Role>("role");
-                foreach (var item in roles)
+                List<Library> Libraries = rest.Get<Library>("Library");
+                foreach (var item in Libraries)
                 {
-                    Console.WriteLine(item.RoleId + "\t" + item.RoleName);
+                    Console.WriteLine(item.LibraryId + "\t" + item.LibraryName);
                 }
             }
-            if (entity == "Director")
+            if (entity == "Author")
             {
                 Console.WriteLine("Id" + "\t" + "Name");
-                List<Director> directors = rest.Get<Director>("director");
-                foreach (var item in directors)
+                List<Author> Authors = rest.Get<Author>("Author");
+                foreach (var item in Authors)
                 {
-                    Console.WriteLine(item.DirectorId + "\t" + item.DirectorName);
+                    Console.WriteLine(item.AuthorId + "\t" + item.AuthorName);
                 }
 
 
             }
-            if (entity == "Movie")
+            if (entity == "Book")
             {
                 Console.WriteLine("Id" + "\t" + "Title");
-                List<Movie> movies = rest.Get<Movie>("movie");
-                foreach (var item in movies)
+                List<Book> Books = rest.Get<Book>("Book");
+                foreach (var item in Books)
                 {
-                    Console.WriteLine(item.MovieId + "\t" + item.Title);
+                    Console.WriteLine(item.BookId + "\t" + item.Title);
                 }
             }
             Console.ReadLine();
@@ -126,7 +122,7 @@ namespace UHRRJ1_HFT_2022232.Client
         {
             Console.WriteLine("\n"+entity + " update");
 
-            if (entity == "Actor")
+            if (entity == "Reader")
             {
                 Console.Write("Id: ");
                 int id = int.Parse(Console.ReadLine());
@@ -134,36 +130,32 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("new Name: ");
                 string name = Console.ReadLine();
 
-                Actor a = rest.Get<Actor>(id, "actor");
-                a.ActorName = name;
-                rest.Put(a,"actor");
+                Reader a = rest.Get<Reader>(id, "Reader");
+                a.ReaderName = name;
+                rest.Put(a,"Reader");
             }
-            if (entity == "Role")
+            if (entity == "Library")
             {
-                Console.Write("RoleId: ");
-                string RoleId = Console.ReadLine();
+                Console.Write("LibraryId: ");
+                string LibraryId = Console.ReadLine();
 
-                Console.Write("new MovieId: ");
-                string MovieId = Console.ReadLine();
+                Console.Write("new BookId: ");
+                string BookId = Console.ReadLine();
 
-                Console.Write("new ActorId: ");
-                string ActorId = Console.ReadLine();
+                Console.Write("new ReaderId: ");
+                string ReaderId = Console.ReadLine();
 
-                Console.Write("new Priority: ");
-                string Priority = Console.ReadLine();
+                Console.Write("new LibraryName: ");
+                string LibraryName = Console.ReadLine();
 
-                Console.Write("new RoleName: ");
-                string RoleName = Console.ReadLine();
-
-                Role r = rest.Get<Role>(int.Parse(RoleId),"role");
-                r.RoleName = RoleName;
-                r.Priority = int.Parse(Priority);
-                r.ActorId = int.Parse(ActorId);
-                r.MovieId = int.Parse(MovieId);
-                r.RoleId = int.Parse(RoleId);
-                rest.Put(r,"role");
+                Library r = rest.Get<Library>(int.Parse(LibraryId),"Library");
+                r.LibraryName = LibraryName;
+                r.ReaderId = int.Parse(ReaderId);
+                r.BookId = int.Parse(BookId);
+                r.LibraryId = int.Parse(LibraryId);
+                rest.Put(r,"Library");
             }
-            if (entity == "Director")
+            if (entity == "Author")
             {
                 Console.Write("Id: ");
                 string id = Console.ReadLine();
@@ -171,23 +163,23 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("new name: ");
                 string name = Console.ReadLine();
 
-                Director d = rest.Get<Director>(int.Parse(id),"director");
-                d.DirectorName = name;
-                rest.Put(d,"director");
+                Author d = rest.Get<Author>(int.Parse(id),"Author");
+                d.AuthorName = name;
+                rest.Put(d,"Author");
             }
-            if (entity == "Movie")
+            if (entity == "Book")
             {
                 Console.Write("Id: ");
-                string MovieId = Console.ReadLine();
+                string BookId = Console.ReadLine();
 
                 Console.Write("new Title: ");
                 string Title = Console.ReadLine();
 
-                Console.Write("new Income: ");
+                Console.Write("new Price: ");
                 string Income = Console.ReadLine();
 
-                Console.Write("new DirectorId: ");
-                string DirectorId = Console.ReadLine();
+                Console.Write("new AuthorId: ");
+                string AuthorId = Console.ReadLine();
 
                 Console.Write("new Release: ");
                 string Release = Console.ReadLine();
@@ -195,13 +187,13 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("new Rating: ");
                 string Rating = Console.ReadLine();
 
-                Movie m = rest.Get<Movie>(int.Parse(MovieId),"movie");
+                Book m = rest.Get<Book>(int.Parse(BookId),"Book");
                 m.Title = Title;
-                m.Income = int.Parse(Income);
-                m.DirectorId = int.Parse(DirectorId);
+                m.Price = int.Parse(Income);
+                m.AuthorId = int.Parse(AuthorId);
                 m.Release = DateTime.Parse(Release);
                 m.Rating = int.Parse(Rating);
-                rest.Put(m,"movie");
+                rest.Put(m,"Book");
             }
             Console.WriteLine(entity + " updated.");
 
@@ -216,13 +208,13 @@ namespace UHRRJ1_HFT_2022232.Client
 
             switch (entity)
             {
-                case "Actor": rest.Delete(id,"actor"); break;
+                case "Reader": rest.Delete(id,"Reader"); break;
 
-                case "Director": rest.Delete(id, "director"); break;
+                case "Author": rest.Delete(id, "Author"); break;
 
-                case "Movie": rest.Delete(id, "movie"); break;
+                case "Book": rest.Delete(id, "Book"); break;
 
-                case "Role": rest.Delete(id, "role"); break;
+                case "Library": rest.Delete(id, "Library"); break;
             }
 
             Console.WriteLine(entity + " deleted.");
@@ -233,73 +225,73 @@ namespace UHRRJ1_HFT_2022232.Client
         {
             Console.Write("Year: ");
             double year = double.Parse(Console.ReadLine());
-            IQueryable<Movie> movies = rest.Get<Movie>("movie").AsQueryable();
-            double result = movies.Where(t => t.Release.Year == year).Average(t => t.Rating);
+            IQueryable<Book> Books = rest.Get<Book>("Book").AsQueryable();
+            double result = Books.Where(t => t.Release.Year == year).Average(t => t.Rating);
             Console.WriteLine("Rating: "+result);
             Console.ReadLine();
         }
         static void YearStatistics()
         {
-            IQueryable<Movie> movies = rest.Get<Movie>("movie").AsQueryable();
-            var q =from x in movies
+            IQueryable<Book> Books = rest.Get<Book>("Book").AsQueryable();
+            var q =from x in Books
                    group x by x.Release.Year into g
                    select new
                    {
                        Year = g.Key,
                        AvgRating = g.Average(t => t.Rating),
-                       MovieNumber = g.Count()
+                       BookNumber = g.Count()
                    };
-            Console.WriteLine("Year:\tRating\tNumber of movies");
+            Console.WriteLine("Year:\tRating\tNumber of Books");
             foreach (var item in q)
             {
-                Console.WriteLine(item.Year + "\t" + Math.Round(item.AvgRating,2) + "\t"+item.MovieNumber);
+                Console.WriteLine(item.Year + "\t" + Math.Round(item.AvgRating,2) + "\t"+item.BookNumber);
             }
             Console.ReadLine();
         }
 
         static void Main(string[] args)
         {
-            rest = new RestService("http://localhost:23125/", "movie");
+            rest = new RestService("http://localhost:23125/", "Book");
 
             var Stat = new ConsoleMenu(args, level: 1)
                 .Add("Average Rating Per Year",() => GetAverageRatePerYear())
                 .Add("Year Statistics", () => YearStatistics())
                 .Add("Exit", ConsoleMenu.Close);
 
-            var actorSubMenu = new ConsoleMenu(args, level: 1)
-                .Add("List", () => List("Actor"))
-                .Add("Create", () => Create("Actor"))
-                .Add("Delete", () => Delete("Actor"))
-                .Add("Update", () => Update("Actor"))
+            var ReaderSubMenu = new ConsoleMenu(args, level: 1)
+                .Add("List", () => List("Reader"))
+                .Add("Create", () => Create("Reader"))
+                .Add("Delete", () => Delete("Reader"))
+                .Add("Update", () => Update("Reader"))
                 .Add("Exit", ConsoleMenu.Close);
 
-            var roleSubMenu = new ConsoleMenu(args, level: 1)
-                .Add("List", () => List("Role"))
-                .Add("Create", () => Create("Role"))
-                .Add("Delete", () => Delete("Role"))
-                .Add("Update", () => Update("Role"))
+            var LibrarySubMenu = new ConsoleMenu(args, level: 1)
+                .Add("List", () => List("Library"))
+                .Add("Create", () => Create("Library"))
+                .Add("Delete", () => Delete("Library"))
+                .Add("Update", () => Update("Library"))
                 .Add("Exit", ConsoleMenu.Close);
 
-            var directorSubMenu = new ConsoleMenu(args, level: 1)
-                .Add("List", () => List("Director"))
-                .Add("Create", () => Create("Director"))
-                .Add("Delete", () => Delete("Director"))
-                .Add("Update", () => Update("Director"))
+            var AuthorSubMenu = new ConsoleMenu(args, level: 1)
+                .Add("List", () => List("Author"))
+                .Add("Create", () => Create("Author"))
+                .Add("Delete", () => Delete("Author"))
+                .Add("Update", () => Update("Author"))
                 .Add("Exit", ConsoleMenu.Close);
 
-            var movieSubMenu = new ConsoleMenu(args, level: 1)
-                .Add("List", () => List("Movie"))
-                .Add("Create", () => Create("Movie"))
-                .Add("Delete", () => Delete("Movie"))
-                .Add("Update", () => Update("Movie"))
+            var BookSubMenu = new ConsoleMenu(args, level: 1)
+                .Add("List", () => List("Book"))
+                .Add("Create", () => Create("Book"))
+                .Add("Delete", () => Delete("Book"))
+                .Add("Update", () => Update("Book"))
                 .Add("Statistics", () => Stat.Show())
                 .Add("Exit", ConsoleMenu.Close);
 
             var menu = new ConsoleMenu(args, level: 0)
-                .Add("Movies", () => movieSubMenu.Show())
-                .Add("Actors", () => actorSubMenu.Show())
-                .Add("Roles", () => roleSubMenu.Show())
-                .Add("Directors", () => directorSubMenu.Show())
+                .Add("Books", () => BookSubMenu.Show())
+                .Add("Readers", () => ReaderSubMenu.Show())
+                .Add("Librarys", () => LibrarySubMenu.Show())
+                .Add("Authors", () => AuthorSubMenu.Show())
                 .Add("Exit", ConsoleMenu.Close);
 
             menu.Show();

@@ -4,14 +4,14 @@ using UHRRJ1_HFT_2022232.Models;
 
 namespace UHRRJ1_HFT_2022232.Logic.Interfaces
 {
-    public interface IMovieLogic
+    public interface IBookLogic
     {
-        void Create(Movie item);
+        void Create(Book item);
         void Delete(int id);
         double? GetAverageRatePerYear(int year);
-        Movie Read(int id);
-        IQueryable<Movie> ReadAll();
-        void Update(Movie item);
-        IEnumerable<MovieLogic.YearInfo> YearStatistics();
+        Book Read(int id);
+        IQueryable<Book> ReadAll();
+        void Update(Book item);
+        IEnumerable<BookLogic.YearInfo> YearStatistics();
     }
 }

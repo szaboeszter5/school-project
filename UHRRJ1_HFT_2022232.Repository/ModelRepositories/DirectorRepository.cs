@@ -7,20 +7,20 @@ using UHRRJ1_HFT_2022232.Models;
 
 namespace UHRRJ1_HFT_2022232.Repository
 {
-    public class DirectorRepository : Repository<Director>, IRepository<Director>
+    public class AuthorRepository : Repository<Author>, IRepository<Author>
     {
-        public DirectorRepository(MovieDbContext ctx) : base(ctx)
+        public AuthorRepository(LibraryDbContext ctx) : base(ctx)
         {
         }
 
-        public override Director Read(int id)
+        public override Author Read(int id)
         {
-            return ctx.Directors.FirstOrDefault(t => t.DirectorId == id);
+            return ctx.Authors.FirstOrDefault(t => t.AuthorId == id);
         }
 
-        public override void Update(Director item)
+        public override void Update(Author item)
         {
-            var old = Read(item.DirectorId);
+            var old = Read(item.AuthorId);
             foreach (var prop in old.GetType().GetProperties())
             {
                 if (prop.GetAccessors().FirstOrDefault(t => t.IsVirtual) == null)

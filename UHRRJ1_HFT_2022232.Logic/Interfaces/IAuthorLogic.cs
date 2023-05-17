@@ -4,12 +4,12 @@ using UHRRJ1_HFT_2022232.Models;
 
 namespace UHRRJ1_HFT_2022232.Logic.Interfaces
 {
-    public interface IDirectorLogic
+    public interface IAuthorLogic
     {
-        void Create(Director item);
+        void Create(Author item);
         void Delete(int id);
-        Director Read(int id);
-        IQueryable<Director> ReadAll();
-        void Update(Director item);
+        Author Read(int id);
+        IQueryable<Author> ReadAll();
+        void Update(Author item);
     }
 }

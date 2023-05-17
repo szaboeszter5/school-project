@@ -3,20 +3,20 @@ using UHRRJ1_HFT_2022232.Models;
 
 namespace UHRRJ1_HFT_2022232.Repository
 {
-    public class ActorRepository : Repository<Actor>, IRepository<Actor>
+    public class ReaderRepository : Repository<Reader>, IRepository<Reader>
     {
-        public ActorRepository(MovieDbContext ctx) : base(ctx)
+        public ReaderRepository(LibraryDbContext ctx) : base(ctx)
         {
         }
 
-        public override Actor Read(int id)
+        public override Reader Read(int id)
         {
-            return ctx.Actors.FirstOrDefault(t => t.ActorId == id);
+            return ctx.Readers.FirstOrDefault(t => t.ReaderId == id);
         }
 
-        public override void Update(Actor item)
+        public override void Update(Reader item)
         {
-            var old = Read(item.ActorId);
+            var old = Read(item.ReaderId);
             foreach (var prop in old.GetType().GetProperties())
             {
                 if (prop.GetAccessors().FirstOrDefault(t => t.IsVirtual) == null)
