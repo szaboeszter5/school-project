@@ -9,52 +9,52 @@ using System.Threading.Tasks;
 
 namespace UHRRJ1_HFT_2022232.Models
 {
-    public class Role
+    public class Library
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RoleId { get; set; }
+        public int LibraryId { get; set; }
 
-        public int Priority { get; set; }
-        public string RoleName { get; set; }
+        public string LibraryName { get; set; }
 
-        public int MovieId { get; set; }
-        public int ActorId { get; set; }
+        public int BookId { get; set; }
 
-        public virtual Actor Actor { get; private set; }
+        public int ReaderId { get; set; }
+
+        public virtual Reader Reader { get; private set; }
+
         [JsonIgnore]
-        public virtual Movie Movie { get; private set; }
+        public virtual Book Book { get; private set; }
 
-        public Role()
+        public Library()
         {
 
         }
 
-        public Role(string line)
+        public Library(string line)
         {
             string[] split = line.Split('#');
-            RoleId = int.Parse(split[0]);
-            MovieId = int.Parse(split[1]);
-            ActorId = int.Parse(split[2]);
-            Priority = int.Parse(split[3]);
-            RoleName = split[4];
+            LibraryId = int.Parse(split[0]);
+            BookId = int.Parse(split[1]);
+            ReaderId = int.Parse(split[2]);
+            LibraryName = split[3];
         }
 
-        public override bool Equals(object obj)
-        {
-            Role other = obj as Role;
-            return RoleId == other.RoleId
-                && MovieId == other.MovieId
-                && ActorId == other.ActorId
-                && Priority == other.Priority
-                && RoleName == other.RoleName
-                && Actor.Equals(other.Actor)
-                && Movie.Equals(other.Movie); 
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    Library other = obj as Library;
+        //    return LibraryId == other.LibraryId
+        //        && BookId == other.BookId
+        //        && ReaderId == other.ReaderId
+        //        && Priority == other.Priority
+        //        && LibraryName == other.LibraryName
+        //        && Reader.Equals(other.Reader)
+        //        && Book.Equals(other.Book); 
+        //}
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(RoleId,MovieId,ActorId,Priority,RoleName,Actor,Movie);
-        }
+        //public override int GetHashCode()
+        //{
+        //    return HashCode.Combine(LibraryId,BookId,ReaderId,Priority,LibraryName,Reader,Book);
+        //}
     }
 }

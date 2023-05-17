@@ -9,64 +9,65 @@ using System.Threading.Tasks;
 
 namespace UHRRJ1_HFT_2022232.Models
 {
-    public class Movie
+    public class Book
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int MovieId { get; set; }
+        public int BookId { get; set; }
 
         [StringLength(240)]
         public string Title { get; set; }
 
         [Range(0, 10000)]
-        public double Income { get; set; }
+        public double Price { get; set; }
 
-        [Range(0, 10)]
+        [Range(0, 5)]
         public double Rating { get; set; }
 
         public DateTime Release { get; set; }
 
-        public int DirectorId { get; set; }
+        public int AuthorId { get; set; }
 
-        public virtual Director Director { get; set; }
+        public virtual Author Author { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<Actor> Actors { get; set; }
+        public virtual ICollection<Reader> Readers { get; set; }
 
-        public virtual ICollection<Role> Roles { get; set; }
+        public virtual ICollection<Role> Library { get; set; }
 
 
-        public Movie()
+        public Book()
         {
 
         }
 
-        public Movie(string line)
+        public Book(string line)
         {
             string[] split = line.Split('#');
-            MovieId = int.Parse(split[0]);
+            BookId = int.Parse(split[0]);
             Title = split[1];
-            Income = double.Parse(split[2]);
-            DirectorId = int.Parse(split[3]);
+            Price = double.Parse(split[2]);
+            AuthorId = int.Parse(split[3]);
             Release = DateTime.Parse(split[4].Replace('*', '.'));
             Rating = double.Parse(split[5]);
         }
 
-        public override bool Equals(object obj)
-        {
-            Movie movie = obj as Movie;
-            return MovieId == movie.MovieId
-                && Title == movie.Title
-                && Income == movie.Income
-                && DirectorId == movie.DirectorId
-                && Release.Equals(movie.Release)
-                && Rating == movie.Rating;
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    if (obj is Book Book)
+        //        return this.BookId == Book.BookId
+        //            && this.Title.Equals(Book.Title)
+        //            && this.Income == Book.Income
+        //            && this.AuthorId == Book.AuthorId
+        //            && this.Release.Equals(Book.Release)
+        //            && this.Rating == Book.Rating;
+        //    return false;
+        //}
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(MovieId,Title,Income,DirectorId,Release,Rating);
-        }
+        //public override int GetHashCode()
+        //{
+        //    return HashCode.Combine(BookId,Title,Income,AuthorId,Release,Rating);
+        //}
     }
 
 }

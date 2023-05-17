@@ -6,44 +6,44 @@ using System.Text.Json.Serialization;
 
 namespace UHRRJ1_HFT_2022232.Models
 {
-    public class Actor
+    public class Reader
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ActorId { get; set; }
+        public int ReaderId { get; set; }
 
         [Required]
         [StringLength(240)]
-        public string ActorName { get; set; }
+        public string ReaderName { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<Movie> Movies { get; set; }
+        public virtual ICollection<Book> Books { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Role> Roles { get; set; }
-        public Actor()
+        public virtual ICollection<Library> Library { get; set; }
+        public Reader()
         {
 
         }
 
-        public Actor(string line)
+        public Reader(string line)
         {
             string[] split = line.Split('#');
-            ActorId = int.Parse(split[0]);
-            ActorName = split[1];
+            ReaderId = int.Parse(split[0]);
+            ReaderName = split[1];
         }
 
-        public override bool Equals(object obj)
-        {
-            Actor other = obj as Actor;
-            return ActorId == other.ActorId
-                && ActorName == other.ActorName
-                && Roles.Equals(other.Roles)
-                && Movies.Equals(other.Movies);
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    Reader other = obj as Reader;
+        //    return ReaderId == other.ReaderId
+        //        && ReaderName == other.ReaderName
+        //        && Librarys.Equals(other.Librarys)
+        //        && Books.Equals(other.Books);
+        //}
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(ActorId,ActorName,Movies,Roles);
-        }
+        //public override int GetHashCode()
+        //{
+        //    return HashCode.Combine(ReaderId,ReaderName,Books,Librarys);
+        //}
     }
 }
