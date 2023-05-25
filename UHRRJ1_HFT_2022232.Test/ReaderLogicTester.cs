@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using UHRRJ1_HFT_2022232.Logic;
+using UHRRJ1_HFT_2022232.Logic.Interfaces;
 using UHRRJ1_HFT_2022232.Models;
 using UHRRJ1_HFT_2022232.Repository;
 using static UHRRJ1_HFT_2022232.Logic.ReaderLogic;
@@ -13,65 +14,41 @@ namespace UHRRJ1_HFT_2022232.Test
     [TestFixture]
     public class ReaderLogicTester
     {
-        ReaderLogic logic;
+        ReaderLogic readerlogic;
         Mock<IRepository<Reader>> mockReaderRepo;
 
         [SetUp]
         public void Init()
         {
             mockReaderRepo = new Mock<IRepository<Reader>>();
-            mockReaderRepo.Setup(a => a.ReadAll()).Returns(new List<Reader>()
+            mockReaderRepo.Setup(d => d.ReadAll()).Returns(new List<Reader>()
             {
-                //new Library("1#1#212#1#Tony Stark")
-
-                new Reader()
+                new Reader ("1,Béla")
                 {
-                    ReaderId = 1,
-                    ReaderName = "ReaderA",
-                    Libraries = new List<Library>()
+                    Books = new List<Book>()
                     {
-                        new Library()
+                        new Book ("1,Book1,1000,5,2000.01.01,1"),
+                        new Book ("2,Book2,2000,4,2010.02.03,1")
                     }
                 },
-                new Reader()
-                {
-                    ReaderId=2,
-                    ReaderName="ReaderB",
-                    Libraries = new List<Library>()
-                    {
-                        new Library(""),
-                        new Library("")
-                    }
-                },
-                new Reader()
-                {
-                    ReaderId = 3,
-                    ReaderName = "ReaderC",
-                    Libraries = new List<Library>()
-                    {
-                        new Library()
-                    }
-                },
-                new Reader()
-                {
-                    ReaderId = 4,
-                    ReaderName = "ReaderD",
-                    Libraries = new List<Library>()
-                    {
-                    }
-                }
+                new Reader ("2,Géza"),
+                new Reader ("3,Judit"),
+                new Reader ("4,Kata")
             }.AsQueryable());
-            logic = new ReaderLogic(mockReaderRepo.Object);
+            readerlogic = new ReaderLogic(mockReaderRepo.Object);
         }
 
         //CREATE EXCEPTION HANDLING
         [Test]
         public void CreateReader_ValidName_Test()
         {
-            var Reader = new Reader() { ReaderName = "Géza" };
+            var Reader = new Reader()
+            {
+                ReaderName = "Béla"
+            };
 
             //ACT
-            logic.Create(Reader);
+            readerlogic.Create(Reader);
 
             //ASSERT
             mockReaderRepo.Verify(r => r.Create(Reader), Times.Once);
@@ -85,7 +62,7 @@ namespace UHRRJ1_HFT_2022232.Test
             //ACT
             try
             {
-                logic.Create(Reader);
+                readerlogic.Create(Reader);
             }
             catch { }
             //ASSERT
@@ -100,7 +77,7 @@ namespace UHRRJ1_HFT_2022232.Test
             //ACT
             try
             {
-                logic.Create(Reader);
+                readerlogic.Create(Reader);
             }
             catch { }
             //ASSERT

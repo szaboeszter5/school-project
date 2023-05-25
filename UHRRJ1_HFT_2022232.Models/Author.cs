@@ -29,24 +29,28 @@ namespace UHRRJ1_HFT_2022232.Models
 
         public Author(string line)
         {
-            string[] split = line.Split('#');
+            string[] split = line.Split(',');
             AuthorId = int.Parse(split[0]);
             AuthorName = split[1];
             Books = new HashSet<Book>();
         }
 
-        //public override bool Equals(object obj)
-        //{
-        //    if (obj is Author other)
-        //        return AuthorId == other.AuthorId
-        //            && AuthorName == other.AuthorName
-        //            && Books.Equals(other.Books);
-        //    return false;
-        //}
-        //public override int GetHashCode()
-        //{
-        //    return HashCode.Combine(AuthorId,AuthorName,Books);
-        //}
+        public override bool Equals(object obj)
+        {
+            if (obj is Author other)
+                return AuthorId == other.AuthorId
+                    && AuthorName.Equals(other.AuthorName);
+            return false;
+        }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(AuthorId, AuthorName);
+        }
+
+        public override string ToString()
+        {
+            return AuthorId + " " + AuthorName;
+        }
     }
 
 }

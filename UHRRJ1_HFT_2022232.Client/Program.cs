@@ -7,6 +7,35 @@ using UHRRJ1_HFT_2022232.Models;
 
 namespace UHRRJ1_HFT_2022232.Client
 {
+    public class AuthorsBookCount
+    {
+        public string Name { get; internal set; }
+        public int BookCount { get; internal set; }
+
+        public AuthorsBookCount(string name, int bookCount)
+        {
+            Name = name;
+            BookCount = bookCount;
+        }
+
+        public AuthorsBookCount()
+        {
+
+        }
+
+        public override bool Equals(object obj)
+        {
+            AuthorsBookCount other = obj as AuthorsBookCount;
+            return Name.Equals(other.Name)
+                && BookCount == other.BookCount;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, BookCount);
+        }
+    }
+
     internal class Program
     {
         static RestService rest;
@@ -21,7 +50,7 @@ namespace UHRRJ1_HFT_2022232.Client
                 string name = Console.ReadLine();
                 rest.Post(new Reader() { ReaderName = name}, "Reader");
             }
-            if (entity == "Library")
+            if (entity == "BookStore")
             {
                 Console.Write("BookId: ");
                 string BookId = Console.ReadLine();
@@ -29,15 +58,15 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("ReaderId: ");
                 string ReaderId = Console.ReadLine();
 
-                Console.Write("LibraryName: ");
-                string LibraryName = Console.ReadLine();
+                Console.Write("BookStoreName: ");
+                string BookStoreName = Console.ReadLine();
 
-                rest.Post(new Library() 
+                rest.Post(new BookStore() 
                 { 
-                    LibraryName = LibraryName,
+                    BookStoreName = BookStoreName,
                     BookId = int.Parse(BookId),
                     ReaderId = int.Parse(ReaderId),
-                }, "Library");
+                }, "BookStore");
             }
             if (entity == "Author")
             {
@@ -87,13 +116,13 @@ namespace UHRRJ1_HFT_2022232.Client
                     Console.WriteLine(item.ReaderId + "\t" + item.ReaderName);
                 }
             }
-            if (entity == "Library")
+            if (entity == "BookStore")
             {
                 Console.WriteLine("id" + "\t" + "Name");
-                List<Library> Libraries = rest.Get<Library>("Library");
+                List<BookStore> Libraries = rest.Get<BookStore>("BookStore");
                 foreach (var item in Libraries)
                 {
-                    Console.WriteLine(item.LibraryId + "\t" + item.LibraryName);
+                    Console.WriteLine(item.BookStoreId + "\t" + item.BookStoreName);
                 }
             }
             if (entity == "Author")
@@ -134,10 +163,10 @@ namespace UHRRJ1_HFT_2022232.Client
                 a.ReaderName = name;
                 rest.Put(a,"Reader");
             }
-            if (entity == "Library")
+            if (entity == "BookStore")
             {
-                Console.Write("LibraryId: ");
-                string LibraryId = Console.ReadLine();
+                Console.Write("BookStoreId: ");
+                string BookStoreId = Console.ReadLine();
 
                 Console.Write("new BookId: ");
                 string BookId = Console.ReadLine();
@@ -145,15 +174,15 @@ namespace UHRRJ1_HFT_2022232.Client
                 Console.Write("new ReaderId: ");
                 string ReaderId = Console.ReadLine();
 
-                Console.Write("new LibraryName: ");
-                string LibraryName = Console.ReadLine();
+                Console.Write("new BookStoreName: ");
+                string BookStoreName = Console.ReadLine();
 
-                Library r = rest.Get<Library>(int.Parse(LibraryId),"Library");
-                r.LibraryName = LibraryName;
+                BookStore r = rest.Get<BookStore>(int.Parse(BookStoreId),"BookStore");
+                r.BookStoreName = BookStoreName;
                 r.ReaderId = int.Parse(ReaderId);
                 r.BookId = int.Parse(BookId);
-                r.LibraryId = int.Parse(LibraryId);
-                rest.Put(r,"Library");
+                r.BookStoreId = int.Parse(BookStoreId);
+                rest.Put(r,"BookStore");
             }
             if (entity == "Author")
             {
@@ -214,62 +243,129 @@ namespace UHRRJ1_HFT_2022232.Client
 
                 case "Book": rest.Delete(id, "Book"); break;
 
-                case "Library": rest.Delete(id, "Library"); break;
+                case "BookStore": rest.Delete(id, "BookStore"); break;
             }
 
             Console.WriteLine(entity + " deleted.");
             Console.ReadLine();
         }
 
-        static void GetAverageRatePerYear()
+
+        static void StoreList()
         {
-            Console.Write("Year: ");
-            double year = double.Parse(Console.ReadLine());
+            Console.Write("Author's name: ");
+            string name = Console.ReadLine();
+
+            Console.WriteLine($"\nYou can buy {name}'s books in these stores:\n");
+
             IQueryable<Book> Books = rest.Get<Book>("Book").AsQueryable();
-            double result = Books.Where(t => t.Release.Year == year).Average(t => t.Rating);
-            Console.WriteLine("Rating: "+result);
-            Console.ReadLine();
-        }
-        static void YearStatistics()
-        {
-            IQueryable<Book> Books = rest.Get<Book>("Book").AsQueryable();
-            var q =from x in Books
-                   group x by x.Release.Year into g
-                   select new
-                   {
-                       Year = g.Key,
-                       AvgRating = g.Average(t => t.Rating),
-                       BookNumber = g.Count()
-                   };
-            Console.WriteLine("Year:\tRating\tNumber of Books");
+            var q = Books
+                   .Where(x => x.Author.AuthorName.Equals(name))
+                   .SelectMany(x => x.BookStores)
+                   .ToList();
             foreach (var item in q)
             {
-                Console.WriteLine(item.Year + "\t" + Math.Round(item.AvgRating,2) + "\t"+item.BookNumber);
+                Console.WriteLine(item.ToString());
+            }
+            Console.ReadLine();
+        }
+        static void ReadersAuthorsAndBooks()
+        {
+            Console.WriteLine("Lists the number of books owned by the reader, grouped by authors.");
+            Console.Write("Reader's name: ");
+            string name = Console.ReadLine();
+            Console.WriteLine("\nAuthors\t\tBooks");
+
+            IQueryable<Book> Book = rest.Get<Book>("Book").AsQueryable();
+            var q = Book
+                   .SelectMany(b => b.BookStores.Where(r => r.Reader.ReaderName.Equals(name)).Select(r => b.Author))
+                   .GroupBy(a => a.AuthorName)
+                   .OrderByDescending(g => g.Count())
+                   .Select(g => new AuthorsBookCount()
+                   {
+                       Name = g.Key,
+                       BookCount = g.Count()
+                   })
+                   .ToList();
+
+            foreach (var item in q)
+            {
+                Console.WriteLine(item.Name+"\t"+item.BookCount);
+            }
+
+            Console.ReadLine();
+        }
+        static void AuthorsByNumberOfBooks()
+        {
+            Console.Write("Name\tNumber of books\n");
+            IQueryable<Book> Books = rest.Get<Book>("Book").AsQueryable();
+            var q = Books
+                    .GroupBy(b => b.Author.AuthorName)
+                    .OrderByDescending(x => x.Count())
+                    .Select(x => new AuthorsBookCount()
+                    {
+                        Name = x.Key,
+                        BookCount = x.Count()
+                    });
+            
+            foreach (var item in q)
+            {
+                Console.WriteLine(item.Name+"\t\t"+item.BookCount);
+            }
+            Console.ReadLine();
+        }
+        static void OwnedBooks()
+        {
+            Console.Write("Reader's name: ");
+            string name = Console.ReadLine();
+
+            Console.WriteLine($"{name} owns the following books: ");
+
+            IQueryable<Book> Books = rest.Get<Book>("Book").AsQueryable();
+            var q = Books
+                .Where(b => b.BookStores.Any(rb => rb.Reader.ReaderName.Equals(name)))
+                .ToList();
+
+            foreach (var item in q)
+            {
+                Console.WriteLine(item.Title);
+            }
+            Console.ReadLine();
+        }
+        static void BooksWritten()
+        {
+            Console.Write("Authors's name: ");
+            string name = Console.ReadLine();
+
+            IQueryable<Book> Books = rest.Get<Book>("Book").AsQueryable();
+            var q = Books.Where(b => b.Author.AuthorName.Equals(name)).ToList();
+
+            foreach (var item in q)
+            {
+                Console.WriteLine(item.ToString());
             }
             Console.ReadLine();
         }
 
+
         static void Main(string[] args)
         {
             rest = new RestService("http://localhost:23125/", "Book");
-
-            var Stat = new ConsoleMenu(args, level: 1)
-                .Add("Average Rating Per Year",() => GetAverageRatePerYear())
-                .Add("Year Statistics", () => YearStatistics())
-                .Add("Exit", ConsoleMenu.Close);
 
             var ReaderSubMenu = new ConsoleMenu(args, level: 1)
                 .Add("List", () => List("Reader"))
                 .Add("Create", () => Create("Reader"))
                 .Add("Delete", () => Delete("Reader"))
                 .Add("Update", () => Update("Reader"))
+                .Add("Authors and number of books", () => ReadersAuthorsAndBooks())
+                .Add("List owned books", () => OwnedBooks())
                 .Add("Exit", ConsoleMenu.Close);
 
-            var LibrarySubMenu = new ConsoleMenu(args, level: 1)
-                .Add("List", () => List("Library"))
-                .Add("Create", () => Create("Library"))
-                .Add("Delete", () => Delete("Library"))
-                .Add("Update", () => Update("Library"))
+            var BookStoreSubMenu = new ConsoleMenu(args, level: 1)
+                .Add("List", () => List("BookStore"))
+                .Add("Create", () => Create("BookStore"))
+                .Add("Delete", () => Delete("BookStore"))
+                .Add("Update", () => Update("BookStore"))
                 .Add("Exit", ConsoleMenu.Close);
 
             var AuthorSubMenu = new ConsoleMenu(args, level: 1)
@@ -277,6 +373,9 @@ namespace UHRRJ1_HFT_2022232.Client
                 .Add("Create", () => Create("Author"))
                 .Add("Delete", () => Delete("Author"))
                 .Add("Update", () => Update("Author"))
+                .Add("List of books", () => BooksWritten())
+                .Add("Authors listed by number of books", () => AuthorsByNumberOfBooks())
+                .Add("Stores", () => StoreList())
                 .Add("Exit", ConsoleMenu.Close);
 
             var BookSubMenu = new ConsoleMenu(args, level: 1)
@@ -284,13 +383,12 @@ namespace UHRRJ1_HFT_2022232.Client
                 .Add("Create", () => Create("Book"))
                 .Add("Delete", () => Delete("Book"))
                 .Add("Update", () => Update("Book"))
-                .Add("Statistics", () => Stat.Show())
                 .Add("Exit", ConsoleMenu.Close);
 
             var menu = new ConsoleMenu(args, level: 0)
                 .Add("Books", () => BookSubMenu.Show())
                 .Add("Readers", () => ReaderSubMenu.Show())
-                .Add("Librarys", () => LibrarySubMenu.Show())
+                .Add("BookStores", () => BookStoreSubMenu.Show())
                 .Add("Authors", () => AuthorSubMenu.Show())
                 .Add("Exit", ConsoleMenu.Close);
 

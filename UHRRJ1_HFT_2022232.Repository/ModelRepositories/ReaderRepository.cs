@@ -5,7 +5,7 @@ namespace UHRRJ1_HFT_2022232.Repository
 {
     public class ReaderRepository : Repository<Reader>, IRepository<Reader>
     {
-        public ReaderRepository(LibraryDbContext ctx) : base(ctx)
+        public ReaderRepository(BookStoreDbContext ctx) : base(ctx)
         {
         }
 

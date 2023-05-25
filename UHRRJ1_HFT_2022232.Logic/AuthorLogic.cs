@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UHRRJ1_HFT_2022232.Logic.Interfaces;
 using UHRRJ1_HFT_2022232.Models;
 using UHRRJ1_HFT_2022232.Repository;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace UHRRJ1_HFT_2022232.Logic
 {
@@ -14,6 +16,7 @@ namespace UHRRJ1_HFT_2022232.Logic
             this.repo = repo;
         }
 
+        #region CRUD
         public void Create(Author item)
         {
             this.repo.Create(item);
@@ -34,9 +37,15 @@ namespace UHRRJ1_HFT_2022232.Logic
             return this.repo.ReadAll();
         }
 
+        public IEnumerable<BookStore> Stores(string authorName)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Update(Author item)
         {
             this.repo.Update(item);
         }
+        #endregion
     }
 }

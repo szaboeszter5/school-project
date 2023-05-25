@@ -19,7 +19,8 @@ namespace UHRRJ1_HFT_2022232.Models
         [JsonIgnore]
         public virtual ICollection<Book> Books { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Library> Libraries { get; set; }
+        public virtual ICollection<BookStore> BookStores { get; set; }
+
         public Reader()
         {
 
@@ -27,7 +28,7 @@ namespace UHRRJ1_HFT_2022232.Models
 
         public Reader(string line)
         {
-            string[] split = line.Split('#');
+            string[] split = line.Split(',');
             ReaderId = int.Parse(split[0]);
             ReaderName = split[1];
         }

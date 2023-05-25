@@ -9,7 +9,7 @@ namespace UHRRJ1_HFT_2022232.Repository
 {
     public class BookRepository : Repository<Book>, IRepository<Book>
     {
-        public BookRepository(LibraryDbContext ctx) : base(ctx)
+        public BookRepository(BookStoreDbContext ctx) : base(ctx)
         {
         }
 

@@ -9,34 +9,34 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
 {
     [Route("[controller]")]
     [ApiController]
-    public class LibraryController : ControllerBase
+    public class BookStoreController : ControllerBase
     {
-        ILibraryLogic logic;
-        public LibraryController(ILibraryLogic logic)
+        IBookStoreLogic logic;
+        public BookStoreController(IBookStoreLogic logic)
         {
             this.logic = logic;
         }
 
         [HttpGet]
-        public IEnumerable<Library> ReadAll()
+        public IEnumerable<BookStore> ReadAll()
         {
             return logic.ReadAll();
         }
 
         [HttpGet("{id}")]
-        public Library Read(int id)
+        public BookStore Read(int id)
         {
             return logic.Read(id);
         }
 
         [HttpPost]
-        public void Create([FromBody] Library value)
+        public void Create([FromBody] BookStore value)
         {
             logic.Create(value);
         }
 
         [HttpPut]
-        public void Update([FromBody] Library value)
+        public void Update([FromBody] BookStore value)
         {
             logic.Update(value);
         }

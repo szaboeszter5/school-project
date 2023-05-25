@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using UHRRJ1_HFT_2022232.Logic.Interfaces;
 using UHRRJ1_HFT_2022232.Models;
 using UHRRJ1_HFT_2022232.Repository;
@@ -52,43 +54,85 @@ namespace UHRRJ1_HFT_2022232.Logic
         }
         #endregion
 
-        public double? GetAverageRatePerYear(int year)
+        //mely boltokban lehet megvenni author könyveit
+        public IEnumerable<BookStore> Stores(string authorname)
         {
-            return this.repo
-               .ReadAll()
-               .Where(t => t.Release.Year == year)
-               .Average(t => t.Rating);
+            return repo.ReadAll()
+                   .Where(x => x.Author.AuthorName.Equals(authorname))
+                   .SelectMany(x => x.BookStores)
+                   .ToList();
         }
 
-        public IEnumerable<YearInfo> YearStatistics()
+        //a reader írói és a könyvek száma
+        public IEnumerable<AuthorsBookCount> ReadersAuthorsAndBooks(string readerName)
         {
-            return from x in this.repo.ReadAll()
-                   group x by x.Release.Year into g
-                   select new YearInfo()
+            return
+                   repo.ReadAll()
+                   .SelectMany(b => b.BookStores.Where(r => r.Reader.ReaderName.Equals(readerName)).Select(r => b.Author))
+                   .GroupBy(a => a.AuthorName)
+                   .OrderByDescending(g => g.Count())
+                   .Select(g => new AuthorsBookCount()
                    {
-                       Year = g.Key,
-                       AvgRating = g.Average(t => t.Rating),
-                       BookNumber = g.Count()
-                   };
+                       Name = g.Key,
+                       BookCount = g.Count()
+                   })
+                   .ToList();
         }
 
-        public class YearInfo
+        //authorok listázva könyvek száma szerint
+        public IEnumerable<AuthorsBookCount> AuthorsByNumberOfBooks()
         {
-            public int Year { get; set; }
-            public double? AvgRating { get; set; }
-            public int BookNumber { get; set; }
+            return repo.ReadAll()
+                   .GroupBy(b => b.Author.AuthorName)
+                   .OrderByDescending(x => x.Count())
+                   .Select(x => new AuthorsBookCount()
+                   {
+                       Name = x.Key,
+                       BookCount = x.Count()
+                   });
+        }
+
+        //egy reader összes könyve
+        public IEnumerable<Book> OwnedBooks(string readerName)
+        {
+            return repo.ReadAll().Where(b => b.BookStores.Any(rb => rb.Reader.ReaderName.Equals(readerName))).ToList();
+         
+        }
+
+        //list all books of the author
+        public IEnumerable<Book> BooksWritten(string authorName)
+        { 
+            return repo.ReadAll().Where(b => b.Author.AuthorName.Equals(authorName)).ToList();
+        }
+
+        public class AuthorsBookCount
+        {
+            public string Name { get; internal set; }
+            public int BookCount { get; internal set; }
+
+            public AuthorsBookCount(string name, int bookCount)
+            {
+                Name = name;
+                BookCount = bookCount;
+            }
+
+            public AuthorsBookCount()
+            {
+
+            }
 
             public override bool Equals(object obj)
             {
-                YearInfo other = obj as YearInfo;
-                if (other == null) return false;
-                return Year == other.Year && AvgRating == other.AvgRating && BookNumber == other.BookNumber;
+                AuthorsBookCount other = obj as AuthorsBookCount;
+                return Name.Equals(other.Name)
+                    && BookCount == other.BookCount;
             }
 
             public override int GetHashCode()
             {
-                return HashCode.Combine(Year,AvgRating,BookNumber);
+                return HashCode.Combine(Name, BookCount);
             }
         }
     }
 }
+    

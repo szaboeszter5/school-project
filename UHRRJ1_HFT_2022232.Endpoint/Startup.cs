@@ -25,15 +25,15 @@ namespace UHRRJ1_HFT_2022232.Endpoint
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<LibraryDbContext>();
+            services.AddTransient<BookStoreDbContext>();
 
             services.AddTransient<IRepository<Book>, BookRepository>();
-            services.AddTransient<IRepository<Library>, LibraryRepository>();
+            services.AddTransient<IRepository<BookStore>, LibraryRepository>();
             services.AddTransient<IRepository<Reader>, ReaderRepository>();
             services.AddTransient<IRepository<Author>, AuthorRepository>();
 
             services.AddTransient<IBookLogic, BookLogic>();
-            services.AddTransient<ILibraryLogic, LibraryLogic>();
+            services.AddTransient<IBookStoreLogic, BookStoreLogic>();
             services.AddTransient<IReaderLogic, ReaderLogic>();
             services.AddTransient<IAuthorLogic, AuthorLogic>();
 
