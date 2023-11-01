@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using UHRRJ1_HFT_2022232.Endpoint.Services;
 using UHRRJ1_HFT_2022232.Logic;
 using UHRRJ1_HFT_2022232.Logic.Interfaces;
 using UHRRJ1_HFT_2022232.Models;
@@ -36,6 +37,8 @@ namespace UHRRJ1_HFT_2022232.Endpoint
             services.AddTransient<IBookStoreLogic, BookStoreLogic>();
             services.AddTransient<IReaderLogic, ReaderLogic>();
             services.AddTransient<IAuthorLogic, AuthorLogic>();
+
+            services.AddSignalR();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -68,6 +71,7 @@ namespace UHRRJ1_HFT_2022232.Endpoint
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<SignalRHub>("/hub");
             });
         }
     }

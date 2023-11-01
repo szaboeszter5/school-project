@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using UHRRJ1_HFT_2022232.Endpoint.Services;
 using UHRRJ1_HFT_2022232.Logic;
 using UHRRJ1_HFT_2022232.Models;
 
@@ -12,9 +15,12 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
     public class ReaderController : ControllerBase
     {
         IReaderLogic logic;
-        public ReaderController(IReaderLogic logic)
+        IHubContext<SignalRHub> hub;
+
+        public ReaderController(IReaderLogic logic, IHubContext<SignalRHub> hub)
         {
             this.logic = logic;
+            this.hub = hub;
         }
 
         [HttpGet]
@@ -33,18 +39,22 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
         public void Create([FromBody] Reader value)
         {
             logic.Create(value);
+            this.hub.Clients.All.SendAsync("ReaderCreated", value);
         }
 
         [HttpPut]
         public void Update([FromBody] Reader value)
         {
             logic.Update(value);
+            this.hub.Clients.All.SendAsync("ReaderUpdated", value);
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            var deleted = this.logic.Read(id);
             logic.Delete(id);
+            this.hub.Clients.All.SendAsync("ReaderDeleted", deleted);
         }
     }
 }
