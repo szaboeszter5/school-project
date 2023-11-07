@@ -23,54 +23,43 @@ namespace UHRRJ1_HFT_2022232.WpfClient
             }
         }
 
-        public RestCollection<Reader> Readers { get; set; }
+        public ICommand OpenReadersCommand { get; set; }
+        public ICommand OpenAuthorsCommand { get; set; }
+        public ICommand OpenBooksCommand { get; set; }
+        public ICommand OpenBookstoresCommand { get; set; }
 
-        public ICommand CreateReaderCommand { get; set; }
-        public ICommand DeleteReaderCommand { get; set; }
-        public ICommand UpdateReaderCommand { get; set; }
-
-        private Reader selectedReader;
-        public Reader SelectedReader
-        {
-            get { return selectedReader; }
-            set 
-            {
-                if (value != null)
-                {
-                    selectedReader = new Reader()
-                    {
-                        ReaderName = value.ReaderName,
-                        ReaderId = value.ReaderId,
-                    };
-                }
-                OnPropertyChanged();
-                (DeleteReaderCommand as RelayCommand).NotifyCanExecuteChanged();
-            }
-        }
 
         public MainWindowViewModel()
         {
-            if(!IsInDesignMode)
+            if (!IsInDesignMode)
             {
-                Readers = new RestCollection<Reader>("http://localhost:23125/", "reader", "hub");
-
-                CreateReaderCommand = new RelayCommand(
+                OpenReadersCommand = new RelayCommand(
                     () =>
                     {
-                        Readers.Add(new Reader() { ReaderName = SelectedReader.ReaderName});
+                        ReadersWindow w = new ReadersWindow();
+                        w.ShowDialog();
                     });
 
-                DeleteReaderCommand = new RelayCommand(
-                    () => { Readers.Delete(SelectedReader.ReaderId); },
-                    () => { return SelectedReader != null; });
-
-                UpdateReaderCommand = new RelayCommand(
+                OpenAuthorsCommand = new RelayCommand(
                     () =>
                     {
-                        Readers.Add(new Reader() { ReaderName = "Video T. Károly" });
+                        AuthorsWindow w = new AuthorsWindow();
+                        w.ShowDialog();
                     });
 
-                SelectedReader = new Reader();
+                OpenBooksCommand = new RelayCommand(
+                    () =>
+                    {
+                        BooksWindow w = new BooksWindow();
+                        w.ShowDialog();
+                    });
+
+                OpenBookstoresCommand = new RelayCommand(
+                    () =>
+                    {
+                        BookStoresWindow w = new BookStoresWindow();
+                        w.ShowDialog();
+                    });
             }
         }
     }
