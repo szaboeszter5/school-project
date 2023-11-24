@@ -1,0 +1,80 @@
+﻿<Window x:Class="UHRRJ1_HFT_2022232.WpfClient.AuthorsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UHRRJ1_HFT_2022232.WpfClient"
+        mc:Ignorable="d"
+        Title="Author Editor" Height="450" Width="800">
+
+    <Window.DataContext>
+        <local:AuthorsWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="501*"/>
+            <ColumnDefinition Width="299*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="0" Grid.Column="0" Background="AliceBlue" BorderBrush="Black" BorderThickness="1" RenderTransformOrigin="0.527,0.502">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <ListBox ItemsSource="{Binding Authors}" SelectedItem="{Binding SelectedAuthor}" Grid.Column="0" Grid.Row="0" Margin="10,10,10,10">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding AuthorName}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <StackPanel Grid.Column="1" Grid.Row="0">
+                    <Button Content="Add new author" Command="{Binding CreateAuthorCommand}" Margin="30,40,30,10" Width="125" Height="44" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2"/>
+                    <Button Content="Update author"  Command="{Binding UpdateAuthorCommand}" Margin="30,40,30,10" Width="125" Height="44" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2"/>
+                    <Button Content="Delete author"  Command="{Binding DeleteAuthorCommand}" Margin="30,40,30,10" Width="125" Height="44" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2"/>
+                    <Button Margin="30,40,30,10"                                             Width="125" Height="54" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2">
+                        <TextBlock Text="List authors by number of books" TextWrapping="Wrap"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="20,22,19,15">
+            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite">
+                <StackPanel>
+                    <Label Content="Name" Background="LightBlue"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Name: "/>
+                        <TextBox VerticalContentAlignment="Center" Width="200" Text="{Binding SelectedAuthor.AuthorName}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Books: "/>
+                        <TextBox VerticalContentAlignment="Center" Width="200"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Margin="0,20,0,0">
+                <StackPanel>
+                    <Label Content="Books" Background="LightBlue"/>
+                    <ListBox ItemsSource="{Binding SelectedAuthor.Books}" Height="221">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Books}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+
+            <Label Content="{Binding ErrorMessage}" FontSize="18" Foreground="Red" Height="25" Margin="0,20,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>
