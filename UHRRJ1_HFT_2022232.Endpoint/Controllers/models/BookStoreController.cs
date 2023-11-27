@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using UHRRJ1_HFT_2022232.Endpoint.Services;
 using UHRRJ1_HFT_2022232.Logic.Interfaces;
 using UHRRJ1_HFT_2022232.Models;
 
@@ -11,6 +14,7 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
     [ApiController]
     public class BookStoreController : ControllerBase
     {
+        IHubContext<SignalRHub> hub;
         IBookStoreLogic logic;
         public BookStoreController(IBookStoreLogic logic)
         {
@@ -33,18 +37,21 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
         public void Create([FromBody] BookStore value)
         {
             logic.Create(value);
+            hub.Clients.All.SendAsync("BookStoreCreated", value);
         }
 
         [HttpPut]
         public void Update([FromBody] BookStore value)
         {
             logic.Update(value);
+            hub.Clients.All.SendAsync("BookStoreUpdated", value);
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
             logic.Delete(id);
+            hub.Clients.All.SendAsync("BookStoreDeleted", logic.Read(id));
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
+using UHRRJ1_HFT_2022232.Endpoint.Services;
 using UHRRJ1_HFT_2022232.Logic.Interfaces;
 using UHRRJ1_HFT_2022232.Models;
 
@@ -11,10 +13,12 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
     [ApiController]
     public class AuthorController : ControllerBase
     {
+        IHubContext<SignalRHub> hub;
         IAuthorLogic logic;
-        public AuthorController(IAuthorLogic logic)
+        public AuthorController(IAuthorLogic logic, IHubContext<SignalRHub> hub)
         {
             this.logic = logic;
+            this.hub = hub;
         }
 
         [HttpGet]
@@ -33,18 +37,21 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
         public void Create([FromBody] Author value)
         {
             logic.Create(value);
+            hub.Clients.All.SendAsync("AuthorCreated", value);
         }
 
         [HttpPut]
         public void Update([FromBody] Author value)
         {
             logic.Update(value);
+            hub.Clients.All.SendAsync("AuthorUpdated", value);
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
             logic.Delete(id);
+            hub.Clients.All.SendAsync("AuthorDeleted", logic.Read(id));
         }
     }
 }

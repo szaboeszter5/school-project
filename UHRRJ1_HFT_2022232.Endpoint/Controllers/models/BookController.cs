@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using UHRRJ1_HFT_2022232.Endpoint.Services;
 using UHRRJ1_HFT_2022232.Logic.Interfaces;
 using UHRRJ1_HFT_2022232.Models;
 
@@ -13,7 +16,7 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
     public class BookController : ControllerBase
     {
         IBookLogic logic;
-
+        IHubContext<SignalRHub> hub;
         public BookController(IBookLogic logic)
         {
             this.logic = logic;
@@ -38,6 +41,7 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
         public void Create([FromBody] Book value)
         {
             logic.Create(value);
+            hub.Clients.All.SendAsync("BookCreated", value);
         }
 
         // PUT api/<BookController>/5
@@ -45,6 +49,7 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
         public void Update([FromBody] Book value)
         {
             logic.Update(value);
+            hub.Clients.All.SendAsync("BookUpdated", value);
         }
 
         // DELETE api/<BookController>/5
@@ -52,6 +57,7 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
         public void Delete(int id)
         {
             logic.Delete(id);
+            hub.Clients.All.SendAsync("BookDeleted", logic.Read(id));
         }
     }
 }
