@@ -1,0 +1,63 @@
+﻿﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Reader UI</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html">Authors</a>
+        <a class="active" href="reader.html">Readers</a>
+        <a href="book.html">Books</a>
+        <a href="bookstore.html">Bookstores</a>
+    </div>
+
+    <h1>Reader Catalog</h1>
+
+    <div id="formdiv">
+        <label>Reader Name</label>
+        <input type="text" id="readername" />
+        <button type="button" onclick="create()">Add reader</button>
+    </div>
+
+    <div id="updateformdiv">
+        <label>Reader Name</label>
+        <input type="text" id="readernametoupdate" />
+        <button type="button" onclick="update()">Update reader</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="resultarea">
+        </tbody>
+    </table>
+
+    <table class="table_b">
+        <thead>
+            <tr>
+                <td>
+                    Authors and number of books
+                </td>
+                <td>
+                    <button type="button" onclick="authors_books()">Show</button>
+                </td>
+            </tr>
+        </thead>
+    </table>
+
+    <table id="noncrud_area">
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="reader_script.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+﻿﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Author UI</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div class="header">
+        <a class="active" href="index.html">Authors</a>
+        <a href="reader.html">Readers</a>
+        <a href="book.html">Books</a>
+        <a href="bookstore.html">Bookstores</a>
+    </div>
+
+    <h1>Author Catalog</h1>
+
+    <div id="formdiv">
+        <label>Author Name</label>
+        <input type="text" id="authorname"/>
+        <button type="button" onclick="create()">Add Author</button>
+    </div>
+
+    <div id="updateformdiv">
+        <label>Author Name</label>
+        <input type="text" id="authornametoupdate" />
+        <button type="button" onclick="update()">Update Author</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="resultarea">
+        </tbody>
+    </table>
+
+    <table class="table_b">
+        <thead>
+            <tr>
+                <td>
+                    List of authors, ordered by number of books
+                </td>
+                <td>
+                    <button type="button" onclick="orderedlist()">Show</button>
+                </td>
+            </tr>
+        </thead>
+    </table>
+
+    <table id="noncrud_area">
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
