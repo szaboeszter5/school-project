@@ -64,6 +64,12 @@ namespace UHRRJ1_HFT_2022232.Endpoint
                 await context.Response.WriteAsJsonAsync(response);
             }));
 
+            app.UseCors(x => x
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithOrigins("http://localhost:19631"));
+            
             app.UseRouting();
 
             app.UseAuthorization();
