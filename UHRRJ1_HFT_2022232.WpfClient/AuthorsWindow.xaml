@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UHRRJ1_HFT_2022232.WpfClient"
+        xmlns:local="clr-namespace:UHRRJ1_HFT_2022232.WpfClient.ViewModels"
         mc:Ignorable="d"
         Title="Author Editor" Height="450" Width="800">
 
@@ -36,10 +36,10 @@
                 </ListBox>
 
                 <StackPanel Grid.Column="1" Grid.Row="0">
-                    <Button Content="Add new author" Command="{Binding CreateAuthorCommand}" Margin="30,40,30,10" Width="125" Height="44" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2"/>
-                    <Button Content="Update author"  Command="{Binding UpdateAuthorCommand}" Margin="30,40,30,10" Width="125" Height="44" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2"/>
-                    <Button Content="Delete author"  Command="{Binding DeleteAuthorCommand}" Margin="30,40,30,10" Width="125" Height="44" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2"/>
-                    <Button Margin="30,40,30,10"                                             Width="125" Height="54" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2">
+                    <Button Content="Add new author" Command="{Binding CreateAuthorCommand}" Margin="30,20,30,10" Width="125" Height="45" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2"/>
+                    <Button Content="Update author"  Command="{Binding UpdateAuthorCommand}" Margin="30,10,30,10" Width="125" Height="45" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2"/>
+                    <Button Content="Delete author"  Command="{Binding DeleteAuthorCommand}" Margin="30,10,30,10" Width="125" Height="45" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2"/>
+                    <Button Command="{Binding ListByNumberOfBooksCommand}" Margin="30,10,30,10" Width="125" Height="54" Background="LightGreen" BorderBrush="DarkGreen" BorderThickness="2">
                         <TextBlock Text="List authors by number of books" TextWrapping="Wrap"/>
                     </Button>
                 </StackPanel>
@@ -47,27 +47,33 @@
         </Border>
 
         <StackPanel Grid.Row="0" Grid.Column="1" Margin="20,22,19,15">
-            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite">
+            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Height="57">
                 <StackPanel>
                     <Label Content="Name" Background="LightBlue"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Name: "/>
-                        <TextBox VerticalContentAlignment="Center" Width="200" Text="{Binding SelectedAuthor.AuthorName}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Books: "/>
-                        <TextBox VerticalContentAlignment="Center" Width="200"/>
-                    </StackPanel>
+                    <TextBox VerticalContentAlignment="Center" Width="250" Text="{Binding SelectedAuthor.AuthorName}" Height="25" Margin="0,2,0,0"/>
                 </StackPanel>
             </Border>
 
             <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Margin="0,20,0,0">
                 <StackPanel>
                     <Label Content="Books" Background="LightBlue"/>
-                    <ListBox ItemsSource="{Binding SelectedAuthor.Books}" Height="221">
+                    <ListBox ItemsSource="{Binding AuthorsBooks}" Grid.Column="0" Grid.Row="0" Margin="10,10,10,10">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding Books}" />
+                                <Label Content="{Binding Title}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+
+            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Margin="0,20,0,0">
+                <StackPanel>
+                    <Label Content="Stores" Background="LightBlue"/>
+                    <ListBox ItemsSource="{Binding AuthorsBookStores}" Grid.Column="0" Grid.Row="0" Margin="10,10,10,10">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding BookStoreName}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
