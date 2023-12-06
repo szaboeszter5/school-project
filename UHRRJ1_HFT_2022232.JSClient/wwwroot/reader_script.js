@@ -146,7 +146,7 @@ function books(arg) {
 }
 
 function authors_books(arg) {
-    document.getElementById('noncrud_area').innerHTML = "";
+    document.getElementById('noncrud_area').innerHTML = "<thead><tr><td>Name</td><td>Books</td></tr></thead>";
     name = JSON.parse(decodeURIComponent(arg));
     url = 'http://localhost:23125/ReadersAuthorsAndBooks/FavouriteAuthor?' + new URLSearchParams({ readerName: name }).toString();
     fetch(url)
