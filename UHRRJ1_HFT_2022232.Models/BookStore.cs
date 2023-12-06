@@ -44,10 +44,14 @@ namespace UHRRJ1_HFT_2022232.Models
         public override bool Equals(object obj)
         {
             BookStore other = obj as BookStore;
-            return BookStoreId == other.BookStoreId
-                && BookStoreName == other.BookStoreName
-                && BookId == other.BookId
-                && ReaderId == other.ReaderId;
+            if (other != null)
+            {
+                return BookStoreId == other.BookStoreId
+                    && BookStoreName == other.BookStoreName
+                    && BookId == other.BookId
+                    && ReaderId == other.ReaderId;
+            }
+            else { return false; }
         }
 
         public override int GetHashCode()

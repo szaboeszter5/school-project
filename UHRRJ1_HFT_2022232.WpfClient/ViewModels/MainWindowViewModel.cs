@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using UHRRJ1_HFT_2022232.Models;
 
-namespace UHRRJ1_HFT_2022232.WpfClient
+namespace UHRRJ1_HFT_2022232.WpfClient.ViewModels
 {
     public class MainWindowViewModel : ObservableRecipient
     {

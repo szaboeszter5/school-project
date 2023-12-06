@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UHRRJ1_HFT_2022232.WpfClient.ViewModels"
         mc:Ignorable="d"
-        Title="Author Editor" Height="450" Width="800">
+        Title="Author Editor" Height="600" Width="800">
 
     <Window.DataContext>
         <local:AuthorsWindowViewModel/>
@@ -54,10 +54,10 @@
                 </StackPanel>
             </Border>
 
-            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Margin="0,20,0,0">
+            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Margin="0,20,0,0" Height="200">
                 <StackPanel>
                     <Label Content="Books" Background="LightBlue"/>
-                    <ListBox ItemsSource="{Binding AuthorsBooks}" Grid.Column="0" Grid.Row="0" Margin="10,10,10,10">
+                    <ListBox ItemsSource="{Binding AuthorsBooks}" Grid.Column="0" Grid.Row="0" Margin="10,10,10,10" Height="152">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Label Content="{Binding Title}" />
@@ -67,10 +67,10 @@
                 </StackPanel>
             </Border>
 
-            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Margin="0,20,0,0">
+            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Margin="0,20,0,0" Height="200">
                 <StackPanel>
                     <Label Content="Stores" Background="LightBlue"/>
-                    <ListBox ItemsSource="{Binding AuthorsBookStores}" Grid.Column="0" Grid.Row="0" Margin="10,10,10,10">
+                    <ListBox ItemsSource="{Binding AuthorsBookStores}" Grid.Column="0" Grid.Row="0" Margin="10,10,10,10" Height="152">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Label Content="{Binding BookStoreName}" />

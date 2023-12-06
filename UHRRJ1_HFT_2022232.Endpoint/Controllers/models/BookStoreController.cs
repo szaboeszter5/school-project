@@ -16,9 +16,10 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
     {
         IHubContext<SignalRHub> hub;
         IBookStoreLogic logic;
-        public BookStoreController(IBookStoreLogic logic)
+        public BookStoreController(IBookStoreLogic logic, IHubContext<SignalRHub> hub)
         {
             this.logic = logic;
+            this.hub = hub;
         }
 
         [HttpGet]

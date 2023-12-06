@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using UHRRJ1_HFT_2022232.Logic.Interfaces;
 using UHRRJ1_HFT_2022232.Models;
@@ -21,10 +22,6 @@ namespace UHRRJ1_HFT_2022232.Logic
         #region CRUD
         public void Create(Book item)
         {
-            if (item.Title.Length < 3)
-            {
-                throw new ArgumentException();
-            }
             this.repo.Create(item);
         }
 
@@ -35,12 +32,7 @@ namespace UHRRJ1_HFT_2022232.Logic
 
         public Book Read(int id)
         {
-            var Book = this.repo.Read(id);
-            if (Book == null)
-            {
-                throw new ArgumentException("This Book does not exist.");
-            }
-            return Book;
+            return this.repo.Read(id);
         }
 
         public IQueryable<Book> ReadAll()
@@ -71,7 +63,7 @@ namespace UHRRJ1_HFT_2022232.Logic
                    .SelectMany(b => b.BookStores.Where(r => r.Reader.ReaderName.Equals(readerName)).Select(r => b.Author))
                    .GroupBy(a => a.AuthorName)
                    .OrderByDescending(g => g.Count())
-                   .Select(g => new AuthorsBookCount()
+                   .Select(g => new AuthorsBookCount(null,0)
                    {
                        Name = g.Key,
                        BookCount = g.Count()
@@ -85,7 +77,7 @@ namespace UHRRJ1_HFT_2022232.Logic
             return repo.ReadAll()
                    .GroupBy(b => b.Author.AuthorName)
                    .OrderByDescending(x => x.Count())
-                   .Select(x => new AuthorsBookCount()
+                   .Select(x => new AuthorsBookCount(null,0)
                    {
                        Name = x.Key,
                        BookCount = x.Count()
@@ -112,20 +104,22 @@ namespace UHRRJ1_HFT_2022232.Logic
 
             public AuthorsBookCount(string name, int bookCount)
             {
-                Name = name;
                 BookCount = bookCount;
-            }
-
-            public AuthorsBookCount()
-            {
-
+                Name = name;
             }
 
             public override bool Equals(object obj)
             {
                 AuthorsBookCount other = obj as AuthorsBookCount;
-                return Name.Equals(other.Name)
-                    && BookCount == other.BookCount;
+                if (other != null && other.Name != null)
+                {
+                    return Name.Equals(other.Name)
+                        && BookCount == other.BookCount;
+                }
+                else
+                {
+                    return false;
+                }
             }
 
             public override int GetHashCode()

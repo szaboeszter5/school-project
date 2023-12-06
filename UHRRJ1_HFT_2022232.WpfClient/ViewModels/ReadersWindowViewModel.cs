@@ -9,8 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using UHRRJ1_HFT_2022232.Models;
+using static UHRRJ1_HFT_2022232.Logic.BookLogic;
+using System.Collections.ObjectModel;
+using System.Xml.Linq;
 
-namespace UHRRJ1_HFT_2022232.WpfClient
+namespace UHRRJ1_HFT_2022232.WpfClient.ViewModels
 {
     public class ReadersWindowViewModel : ObservableRecipient
     {
@@ -30,7 +33,11 @@ namespace UHRRJ1_HFT_2022232.WpfClient
             }
         }
 
+        static RestService rest;
+
         public RestCollection<Reader> Readers { get; set; }
+        public ObservableCollection<Book> ListOwnedBooks { get; set; }
+        public ObservableCollection<AuthorsBookCount> AuthorsAndNumberOfBooks { get; set; }
 
         private Reader selectedReader;
         public Reader SelectedReader
@@ -50,6 +57,7 @@ namespace UHRRJ1_HFT_2022232.WpfClient
                     OnPropertyChanged();
                     (DeleteReaderCommand as RelayCommand).NotifyCanExecuteChanged();
                     (UpdateReaderCommand as RelayCommand).NotifyCanExecuteChanged();
+                    PropertyChanged += Refresh;
                 }
             }
         }
@@ -57,12 +65,40 @@ namespace UHRRJ1_HFT_2022232.WpfClient
         public ICommand CreateReaderCommand { get; set; }
         public ICommand DeleteReaderCommand { get; set; }
         public ICommand UpdateReaderCommand { get; set; }
-        public ICommand ListByNumberOfBooksCommand { get; set; }
+
+        void GetBooks(string name)
+        {
+            ListOwnedBooks.Clear();
+            var result = rest.Get<Book>($"/OwnedBooks/OwnedBooks?readerName={name}");
+            foreach (var item in result)
+            {
+                ListOwnedBooks.Add(item);
+            }
+        }
+
+        void GetAuthorsAndNumberOfBooks(string name)
+        {
+            AuthorsAndNumberOfBooks.Clear();
+            var result = rest.Get<AuthorsBookCount>($"ReadersAuthorsAndBooks/FavouriteAuthor?readerName={name}");
+            foreach (var item in result)
+            {
+                AuthorsAndNumberOfBooks.Add(item);
+            }
+        }
+
+        void Refresh(object? sender, PropertyChangedEventArgs e)
+        {
+            GetBooks(SelectedReader.ReaderName);
+            GetAuthorsAndNumberOfBooks(SelectedReader.ReaderName);
+        }
 
         public ReadersWindowViewModel()
         {
             if (!IsInDesignMode)
             {
+                rest = new RestService("http://localhost:23125/");
+
+                //CRUD
                 Readers = new RestCollection<Reader>("http://localhost:23125/", "Reader", "hub");
 
                 CreateReaderCommand = new RelayCommand(() =>
@@ -74,7 +110,6 @@ namespace UHRRJ1_HFT_2022232.WpfClient
                     System.Threading.Thread.Sleep(150);
                     Readers.Update(Readers.Last());
                 });
-
                 UpdateReaderCommand = new RelayCommand(() =>
                 {
                     try
@@ -87,7 +122,6 @@ namespace UHRRJ1_HFT_2022232.WpfClient
                     }
 
                 });
-
                 DeleteReaderCommand = new RelayCommand(() =>
                 {
                     Readers.Delete(SelectedReader.ReaderId);
@@ -98,6 +132,10 @@ namespace UHRRJ1_HFT_2022232.WpfClient
                 });
 
                 SelectedReader = new Reader();
+
+                //non-crud
+                ListOwnedBooks = new ObservableCollection<Book>();
+                AuthorsAndNumberOfBooks = new ObservableCollection<AuthorsBookCount>();
             }
         }
     }

@@ -54,7 +54,8 @@ namespace UHRRJ1_HFT_2022232.Models
 
         public override bool Equals(object obj)
         {
-            if (obj is Book Book)
+
+            if (obj != null && obj is Book Book)
                 return BookId == Book.BookId
                     && Title.Equals(Book.Title)
                     && Price == Book.Price

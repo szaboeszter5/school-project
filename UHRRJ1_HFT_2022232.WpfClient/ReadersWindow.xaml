@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UHRRJ1_HFT_2022232.WpfClient"
+        xmlns:local="clr-namespace:UHRRJ1_HFT_2022232.WpfClient.ViewModels"
         mc:Ignorable="d"
-        Title="ReadersWindow" Height="450" Width="800">
+        Title="ReadersWindow" Height="600" Width="800">
 
     <Window.DataContext>
         <local:ReadersWindowViewModel/>
@@ -44,27 +44,29 @@
         </Border>
 
         <StackPanel Grid.Row="0" Grid.Column="1" Margin="20,22,19,15">
-            <Label Content="{Binding SelectedReader.ReaderName}" FontSize="20" Height="34" Margin="0,0,0,20"/>
-            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite">
+
+            <TextBox Text="{Binding SelectedReader.ReaderName}" FontSize="20" Height="34" Margin="0,0,0,20"/>
+
+            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Margin="0,20,0,0" Height="200">
                 <StackPanel>
                     <Label Content="Number of books by author" Background="LightBlue"/>
-                    <ListBox Height="88">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Label Content="{Binding }" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                    <ListBox Margin="10,10,10,10" Height="152" ItemsSource="{Binding AuthorsAndNumberOfBooks}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                 </StackPanel>
             </Border>
 
-            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Margin="0,20,0,0">
+            <Border  BorderBrush="Black" BorderThickness="1" Background="GhostWhite" Margin="0,20,0,0" Height="200">
                 <StackPanel>
                     <Label Content="Owned books" Background="LightBlue"/>
-                    <ListBox ItemsSource="{Binding SelectedReader.Books}" Height="120">
+                    <ListBox ItemsSource="{Binding ListOwnedBooks}" Margin="10,10,10,10" Height="152">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding BookId}" />
+                                <Label Content="{Binding Title}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

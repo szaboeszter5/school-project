@@ -1,14 +1,20 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.DirectoryServices.ActiveDirectory;
 using System.Drawing;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Xml.Linq;
 using UHRRJ1_HFT_2022232.Models;
@@ -93,7 +99,7 @@ namespace UHRRJ1_HFT_2022232.WpfClient.ViewModels
         void GetListByNumberOfBooks()
         {
             ListByNumberOfBooks.Clear();
-            var result = rest.Get<AuthorsBookCount>($"/AuthorBookNumber/AuthorsByNumberOfBooks");
+            var result = rest.Get<AuthorsBookCount>($"AuthorBookNumber/AuthorsByNumberOfBooks");
             foreach (var item in result)
             {
                 ListByNumberOfBooks.Add(item);
@@ -156,6 +162,8 @@ namespace UHRRJ1_HFT_2022232.WpfClient.ViewModels
                 {
                     GetListByNumberOfBooks();
                     ListByNumberOfBooksWindow w = new ListByNumberOfBooksWindow();
+                    w.DataContext = this;
+                    w.lb.ItemsSource = ListByNumberOfBooks;
                     w.ShowDialog();
                 });
             }

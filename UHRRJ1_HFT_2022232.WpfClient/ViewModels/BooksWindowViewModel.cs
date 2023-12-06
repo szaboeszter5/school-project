@@ -10,14 +10,13 @@ using System.Windows.Input;
 using System.Windows;
 using UHRRJ1_HFT_2022232.Models;
 
-namespace UHRRJ1_HFT_2022232.WpfClient
+namespace UHRRJ1_HFT_2022232.WpfClient.ViewModels
 {
     public class BooksWindowViewModel : ObservableRecipient
     {
         public RestCollection<Book> Books { get; set; }
 
         private Book selectedBook;
-
         public Book SelectedBook
         {
             get { return selectedBook; }
@@ -28,7 +27,11 @@ namespace UHRRJ1_HFT_2022232.WpfClient
                     selectedBook = new Book()
                     {
                         Title = value.Title,
-                        BookId = value.BookId
+                        BookId = value.BookId,
+                        Price = value.Price,
+                        AuthorId = value.AuthorId,
+                        Release = value.Release,
+                        Rating = value.Rating
                     };
                     OnPropertyChanged();
                     (DeleteBookCommand as RelayCommand).NotifyCanExecuteChanged();
@@ -36,11 +39,8 @@ namespace UHRRJ1_HFT_2022232.WpfClient
             }
         }
 
-
         public ICommand CreateBookCommand { get; set; }
-
         public ICommand DeleteBookCommand { get; set; }
-
         public ICommand UpdateBookCommand { get; set; }
 
         public static bool IsInDesignMode
@@ -52,12 +52,12 @@ namespace UHRRJ1_HFT_2022232.WpfClient
             }
         }
 
-
         public BooksWindowViewModel()
         {
             if (!IsInDesignMode)
             {
                 Books = new RestCollection<Book>("http://localhost:23125/", "Book", "hub");
+
                 CreateBookCommand = new RelayCommand(() =>
                 {
                     Books.Add(new Book()
@@ -87,6 +87,7 @@ namespace UHRRJ1_HFT_2022232.WpfClient
                 {
                     return SelectedBook != null;
                 });
+
                 SelectedBook = new Book();
             }
         }

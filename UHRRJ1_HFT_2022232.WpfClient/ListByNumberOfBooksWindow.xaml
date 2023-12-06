@@ -1,0 +1,20 @@
+﻿<Window x:Class="UHRRJ1_HFT_2022232.WpfClient.ListByNumberOfBooksWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UHRRJ1_HFT_2022232.WpfClient.ViewModels"
+        mc:Ignorable="d"
+        Title="ListByNumberOfBooksWindow" Height="450" Width="300">
+
+    <ListBox x:Name="lb" Grid.Column="0" Grid.Row="0" Margin="10,10,10,10">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <StackPanel Orientation="Vertical">
+                    <Label Content="{Binding Name}"/>
+                    <Label Content="{Binding BookCount}"/>
+                </StackPanel>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+</Window>

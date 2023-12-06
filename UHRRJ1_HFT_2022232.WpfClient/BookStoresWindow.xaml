@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UHRRJ1_HFT_2022232.WpfClient"
+        xmlns:local="clr-namespace:UHRRJ1_HFT_2022232.WpfClient.ViewModels"
         mc:Ignorable="d"
-        Title="Bookstore Editor" Height="450" Width="800">
+        Title="Bookstore Editor" Height="600" Width="800">
     <Window.DataContext>
         <local:BookStoresWindowViewModel/>
     </Window.DataContext>
@@ -42,13 +42,20 @@
             </Grid>
         </Border>
 
-        <Border BorderBrush="Black" BorderThickness="1" Margin="20" Grid.Column="1">
-            <StackPanel>
-                <Label Background="LightBlue" Content="Name"/>
-                <TextBox Text="{Binding SelectedBookStore.BookStoreName}" Height="35"/>
-                <Label Content="{Binding ErrorMessage}" FontSize="18" Foreground="Red" Height="25" Margin="0,300,0,0"/>
-            </StackPanel>
-        </Border>
-        
+        <StackPanel Grid.Column="1">
+            <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" Margin="30,30,30,300">
+                <StackPanel>
+                    <Label Background="LightBlue" Content="ID"/>
+                    <Label VerticalContentAlignment="Center" Content="{Binding SelectedBookStore.BookStoreId}" Height="38"/>
+                    <Label Background="LightBlue" Content="Name"/>
+                    <TextBox VerticalContentAlignment="Center" Text="{Binding SelectedBookStore.BookStoreName}" Height="38"/>
+                    <Label Background="LightBlue" Content="BookId"/>
+                    <TextBox VerticalContentAlignment="Center" Text="{Binding SelectedBookStore.BookId}" Height="38"/>
+                    <Label Background="LightBlue" Content="ReaderId"/>
+                    <TextBox VerticalContentAlignment="Center" Text="{Binding SelectedBookStore.ReaderId}" Height="38"/>
+                </StackPanel>
+            </Border>
+            <Label Content="{Binding ErrorMessage}" FontSize="18" Foreground="Red" Height="29"/>
+        </StackPanel>
     </Grid>
 </Window>

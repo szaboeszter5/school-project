@@ -10,14 +10,22 @@ using System.Windows.Input;
 using System.Windows;
 using UHRRJ1_HFT_2022232.Models;
 
-namespace UHRRJ1_HFT_2022232.WpfClient
+namespace UHRRJ1_HFT_2022232.WpfClient.ViewModels
 {
     public class BookStoresWindowViewModel : ObservableRecipient
     {
+        public static bool IsInDesignMode
+        {
+            get
+            {
+                var prop = DesignerProperties.IsInDesignModeProperty;
+                return (bool)DependencyPropertyDescriptor.FromProperty(prop, typeof(FrameworkElement)).Metadata.DefaultValue;
+            }
+        }
+
         public RestCollection<BookStore> BookStores { get; set; }
 
         private BookStore selectedBookStore;
-
         public BookStore SelectedBookStore
         {
             get { return selectedBookStore; }
@@ -28,36 +36,27 @@ namespace UHRRJ1_HFT_2022232.WpfClient
                     selectedBookStore = new BookStore()
                     {
                         BookStoreName = value.BookStoreName,
-                        BookStoreId = value.BookStoreId
+                        BookStoreId = value.BookStoreId,
+                        ReaderId = value.ReaderId,
+                        BookId = value.BookId
                     };
                     OnPropertyChanged();
                     (DeleteBookStoreCommand as RelayCommand).NotifyCanExecuteChanged();
+                    (UpdateBookStoreCommand as RelayCommand).NotifyCanExecuteChanged();
                 }
             }
         }
 
-
         public ICommand CreateBookStoreCommand { get; set; }
-
         public ICommand DeleteBookStoreCommand { get; set; }
-
         public ICommand UpdateBookStoreCommand { get; set; }
-
-        public static bool IsInDesignMode
-        {
-            get
-            {
-                var prop = DesignerProperties.IsInDesignModeProperty;
-                return (bool)DependencyPropertyDescriptor.FromProperty(prop, typeof(FrameworkElement)).Metadata.DefaultValue;
-            }
-        }
-
 
         public BookStoresWindowViewModel()
         {
             if (!IsInDesignMode)
             {
                 BookStores = new RestCollection<BookStore>("http://localhost:23125/", "BookStore", "hub");
+
                 CreateBookStoreCommand = new RelayCommand(() =>
                 {
                     BookStores.Add(new BookStore()
@@ -65,7 +64,6 @@ namespace UHRRJ1_HFT_2022232.WpfClient
                         BookStoreName = SelectedBookStore.BookStoreName
                     });
                 });
-
                 UpdateBookStoreCommand = new RelayCommand(() =>
                 {
                     try
@@ -78,7 +76,6 @@ namespace UHRRJ1_HFT_2022232.WpfClient
                     }
 
                 });
-
                 DeleteBookStoreCommand = new RelayCommand(() =>
                 {
                     BookStores.Delete(SelectedBookStore.BookStoreId);
@@ -87,6 +84,7 @@ namespace UHRRJ1_HFT_2022232.WpfClient
                 {
                     return SelectedBookStore != null;
                 });
+
                 SelectedBookStore = new BookStore();
             }
         }

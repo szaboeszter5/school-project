@@ -17,9 +17,10 @@ namespace UHRRJ1_HFT_2022232.Endpoint.Controllers.models
     {
         IBookLogic logic;
         IHubContext<SignalRHub> hub;
-        public BookController(IBookLogic logic)
+        public BookController(IBookLogic logic , IHubContext<SignalRHub> hub)
         {
             this.logic = logic;
+            this.hub = hub;
         }
 
         // GET: api/<BookController>
