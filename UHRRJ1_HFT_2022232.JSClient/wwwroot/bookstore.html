@@ -1,0 +1,50 @@
+﻿﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Bookstore UI</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html">Authors</a>
+        <a href="reader.html">Readers</a>
+        <a href="book.html">Books</a>
+        <a class="active" href="bookstore.html">Bookstores</a>
+    </div>
+
+    <h1>Bookstore Catalog</h1>
+
+    <div id="formdiv">
+        <label>Bookstore Name</label>
+        <input type="text" id="bookStoreName" />
+        <button type="button" onclick="create()">Add Bookstore</button>
+    </div>
+
+    <div id="updateformdiv">
+        <label>Bookstore Name</label>
+        <input type="text" id="BookStorenametoupdate" />
+        <button type="button" onclick="update()">Update Bookstore</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="resultarea">
+        </tbody>
+    </table>
+
+    <table id="noncrud_area">
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="bookstore_script.js"></script>
+</body>
+</html>
