@@ -126,13 +126,13 @@ function create() {
 }
 
 function orderedlist() {
-    document.getElementById('noncrud_area').innerHTML = "<tr><td>#</td><td>Name</td><td>Books</td></tr>";
+    document.getElementById('noncrud_area').innerHTML = "<tr><td>Name</td><td>Books</td></tr>";
     fetch('http://localhost:23125/AuthorBookNumber/AuthorsByNumberOfBooks/')
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
             data.forEach(t => {
-                document.getElementById('noncrud_area').innerHTML += "<tr><td>"+i+"</td><td>" + t.name + "</td><td>" + t.bookCount + "</td></tr>";
+                document.getElementById('noncrud_area').innerHTML += "<tr><td>" + t.name + "</td><td>" + t.bookCount + "</td></tr>";
                 i++;
             })
         })
@@ -148,7 +148,7 @@ function books(arg) {
         .then(data => {
             console.log('Success:', data);
             data.forEach(book => {
-                document.getElementById('noncrud_area').innerHTML += "<tr><td>" + i + "</td><td>" + book.title + "</td></tr>";
+                document.getElementById('noncrud_area').innerHTML += "<tr><td>" + book.title + "</td></tr>";
                 i++;
             })
         })
