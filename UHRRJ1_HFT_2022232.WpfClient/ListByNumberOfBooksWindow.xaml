@@ -11,8 +11,8 @@
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <StackPanel Orientation="Vertical">
-                    <Label Content="{Binding Name}"/>
-                    <Label Content="{Binding BookCount}"/>
+                    <Label ContentStringFormat="Name: {0}" Content="{Binding Name}"/>
+                    <Label ContentStringFormat="Books: {0}" Content="{Binding BookCount}"/>
                 </StackPanel>
             </DataTemplate>
         </ListBox.ItemTemplate>

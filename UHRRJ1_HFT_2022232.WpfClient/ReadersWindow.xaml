@@ -53,7 +53,10 @@
                     <ListBox Margin="10,10,10,10" Height="152" ItemsSource="{Binding AuthorsAndNumberOfBooks}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding Name}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label ContentStringFormat="Name: {0}" Content="{Binding Name}" />
+                                    <Label ContentStringFormat="Books: {0}" Content="{Binding BookCount}" />
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
