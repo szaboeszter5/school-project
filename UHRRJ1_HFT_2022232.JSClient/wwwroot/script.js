@@ -6,6 +6,7 @@ setupSignalR();
 
 let authorIdToUpdate = -1;
 
+
 function setupSignalR() {
     connection = new signalR.HubConnectionBuilder()
         .withUrl("http://localhost:23125/hub")
@@ -61,8 +62,8 @@ function display() {
                 "<td>" + t.authorName + "</td>" +
                 "<td>" + `<button type="button" onclick="remove(${t.authorId})">Delete</button>` +
                 `<button type="button" onclick="showupdate(${t.authorId})">Update</button>` +
-                `<button type="button" onclick="books(${t.authorId})">Books</button>` +
-                `<button type="button" onclick="stores(${t.authorId})">Stores</button>` +
+                `<button type="button" onclick="books('${encodeURIComponent(JSON.stringify(t.authorName))}')">Books</button>` +
+                `<button type="button" onclick="stores('${encodeURIComponent(JSON.stringify(t.authorName))}')">Stores</button>` +
                 "</td>" +
             "</tr>";
     });
@@ -138,29 +139,40 @@ function orderedlist() {
         .catch((error) => { console.error('Error:', error); });
 }
 
-function books() {
+function books(arg) {
     document.getElementById('noncrud_area').innerHTML = "";
-    fetch('http://localhost:23125/WrittenBooks/WrittenBooks/')
+    name = JSON.parse(decodeURIComponent(arg));
+    url = 'http://localhost:23125/WrittenBooks/WrittenBooks?' + new URLSearchParams({ authorName: name }).toString();
+    fetch(url)
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            data.forEach(t => {
-                document.getElementById('noncrud_area').innerHTML += "<tr><td>" + i + "</td><td>" + t.title + "</td><td>" + t.release + "</td></tr>";
+            data.forEach(book => {
+                document.getElementById('noncrud_area').innerHTML += "<tr><td>" + i + "</td><td>" + book.title + "</td></tr>";
                 i++;
             })
         })
         .catch((error) => { console.error('Error:', error); });
+
+    console.log("Fetched from: ");
+    console.log(url);
 }
 
-function stores() {
+function stores(arg) {
     document.getElementById('noncrud_area').innerHTML = "";
-    fetch('http://localhost:23125/AuthorsStores/Stores/')
+    name = JSON.parse(decodeURIComponent(arg));
+    url = 'http://localhost:23125/AuthorsStores/Stores?' + new URLSearchParams({ authorName: name }).toString();
+    fetch(url)
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
             data.forEach(t => {
-                document.getElementById('noncrud_area').innerHTML += "<tr><td>"+t.bookStoreName+"</td></tr>";
+                document.getElementById('noncrud_area').innerHTML += "<tr><td>" + t.bookStoreName + "</td></tr>";
+                i++;
             })
         })
         .catch((error) => { console.error('Error:', error); });
+
+    console.log("Fetched from: ");
+    console.log(url);
 }

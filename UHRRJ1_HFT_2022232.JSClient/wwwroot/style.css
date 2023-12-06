@@ -32,7 +32,12 @@
         }
 
 h1 {
-    text-align: center;
+    text-align: left;
+}
+
+h2 {
+    text-align: left;
+    margin-top: 30px;
 }
 
 ﻿table {
@@ -96,5 +101,5 @@ table button {
     }
 
 #noncrud_area{
-    margin-top:30px;
+    margin-top:10px;
 }
